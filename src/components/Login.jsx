@@ -9,29 +9,7 @@ import {
   CheckIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
-
-const emailValidation = (value) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (value.trim() === "") {
-    return { message: "Email is required.", errorStat: "false" };
-  } else if (!emailRegex.test(value)) {
-    return {
-      message: "Please enter a valid email address.",
-      errorStat: "false",
-    };
-  } else {
-    return { message: "", errorStat: "true" };
-  }
-};
-
-const passwordValidation = (value) => {
-  if (value.trim() === "") {
-    return { message: "Password is required", errorStat: "false" };
-  } else {
-    return { message: "", errorStat: "true" };
-  }
-};
+import { emailValidation, passwordValidation } from "../validation/validation";
 
 const Login = () => {
   const [visible, setVisible] = useState(false);
@@ -168,7 +146,7 @@ const Login = () => {
                     : " bg-indigo-600 hover:bg-indigo-700 "
                 }`}
               >
-                <span className=" text-base font-Ubuntu font-medium ">
+                <span className=" tracking-wide text-base font-Ubuntu font-medium ">
                   Login
                 </span>
               </button>
