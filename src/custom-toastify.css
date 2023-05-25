@@ -1,0 +1,9 @@
+.Toastify__toast-body {
+    color: black; /* Set the font color */
+    font-size: 14px; /* Set the font size */
+    font-family: "Ubuntu Mono", monospace; /* Set the font type */
+  }
+
+.Toastify__toast {
+    border-radius: 10px; /* Set the border-radius to make the container rounded */
+  }

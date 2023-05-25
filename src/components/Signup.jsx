@@ -1,6 +1,6 @@
 import useInput from "../hooks/useInput";
 import logo from "../assets/logo-blue.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   EyeIcon,
   EyeSlashIcon,
@@ -14,10 +14,13 @@ import {
   passwordValidation,
   fullnameValidation,
 } from "../validation/validation";
+import { axiosInstanceFormData } from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
+  const navigate = useNavigate();
 
   const {
     value: fullname,
@@ -26,6 +29,7 @@ const Signup = () => {
     valueChangeHandler: fullnameChangeHandler,
     errorMessage: fullnameError,
     isTouched: fullnameTouched,
+    reset: resetFullnameInput,
   } = useInput(fullnameValidation);
 
   const {
@@ -35,6 +39,7 @@ const Signup = () => {
     valueChangeHandler: emailChangeHandler,
     errorMessage: emailError,
     isTouched: emailTouched,
+    reset: resetEmailInput,
   } = useInput(emailValidation);
 
   const {
@@ -43,15 +48,51 @@ const Signup = () => {
     hasError: passwordHasError,
     valueChangeHandler: passwordChangeHandler,
     errorMessage: passwordError,
+    reset: resetPasswordInput,
   } = useInput(passwordValidation);
-
-  const handleSubmit = () => {
-    console.log("hhh");
-  };
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
     setAvatar(file);
+  };
+
+  let formIsValid = false;
+
+  if (
+    enteredFullnameIsValid &&
+    enteredEmailIsValid &&
+    enteredPasswordIsValid &&
+    password
+  ) {
+    formIsValid = true;
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!formIsValid) {
+      return; // Prevent form submission if formIsValid is false
+    }
+
+    const newForm = new FormData();
+    newForm.append("file", avatar);
+    newForm.append("fullname", fullname);
+    newForm.append("email", email);
+    newForm.append("password", password);
+
+    try {
+      const response = await axiosInstanceFormData.post(
+        "/users/register-user",
+        newForm
+      );
+      toast.success(response.data.message);
+      resetEmailInput();
+      resetPasswordInput();
+      resetFullnameInput();
+      setAvatar(null);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
@@ -68,7 +109,7 @@ const Signup = () => {
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md ">
-          <form className=" space-y-6">
+          <form className=" space-y-6" onSubmit={handleSubmit}>
             <div className=" flex flex-col relative mb-3 w-full   ">
               <div
                 className={` flex flex-row items-center border  overflow-hidden h-12 rounded-[16px] px-5  transition-colors delay-0, transition-border duration-200 ease-linear delay-0 ${

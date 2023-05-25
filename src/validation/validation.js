@@ -16,6 +16,11 @@ export const emailValidation = (value) => {
 export const passwordValidation = (value) => {
   if (value.trim() === "") {
     return { message: "Password is required", errorStat: "false" };
+  } else if (value.length < 4) {
+    return {
+      message: "Password must have a minimum of 4 characters",
+      errorStat: "false",
+    };
   } else {
     return { message: "", errorStat: "true" };
   }

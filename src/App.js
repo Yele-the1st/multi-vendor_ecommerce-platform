@@ -7,7 +7,10 @@ import Orders from "./pages/Orders";
 import Home from "./pages/Home";
 import Message from "./pages/Message";
 import Messages from "./pages/Messages";
-import { LoginPage, SignupPage } from "./Routes.js";
+import { LoginPage, SignupPage, ActivationPage } from "./Routes.js";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./custom-toastify.css";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -51,6 +54,10 @@ const App = () => {
           path: "/auth/signup",
           element: <SignupPage />,
         },
+        {
+          path: "/auth/activation/:activation_token",
+          element: <ActivationPage />,
+        },
       ],
     },
   ]);
@@ -58,6 +65,18 @@ const App = () => {
   return (
     <div>
       <RouterProvider router={router} />
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
