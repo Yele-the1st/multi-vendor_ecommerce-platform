@@ -11,6 +11,7 @@ import { useState } from "react";
 import { emailValidation, passwordValidation } from "../validation/validation";
 import { axiosInstanceJsonDataWithCredentials } from "../utils/axiosInstance";
 import { toast } from "react-toastify";
+import backgroundImage from "../assets/peeps.svg";
 
 const Login = () => {
   const [visible, setVisible] = useState(false);
@@ -46,7 +47,6 @@ const Login = () => {
     if (!formIsValid) {
       return; // Prevent form submission if formIsValid is false
     }
-    console.log(email, password);
     try {
       const response = await axiosInstanceJsonDataWithCredentials.post(
         "/users/login-user",
@@ -64,8 +64,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
-      <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 ">
+    <div className=" relative min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 sm:px-6 lg:px-8 z-10">
+      <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10  z-50">
         <div className="sm-mx-auto sm:w-full sm:max-w-md">
           {/* <Link to={`/`}>
             <img className=" mx-auto w-auto h-10" src={logo} alt="" />

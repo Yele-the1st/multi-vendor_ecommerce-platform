@@ -2,7 +2,7 @@ const styles = {
   custom_container: "w-11/12 hidden sm:block",
   heading:
     "text-[27px] text-center md:text-start font-[600] font-Roboto pb-[20px]",
-  section: "w-11/12 mx-auto",
+  section: "max-w-screen-2xl mx-auto",
   productTitle: "text-[25px] font-[600] font-Roboto text-[#333]",
   productDiscountPrice: "font-bold text-[18px] text-[#333] font-Roboto",
   price: "font-[500] text-[16px] text-[#d55b45] pl-3 mt-[-4px] line-through",
@@ -17,6 +17,10 @@ const styles = {
   activeStatus:
     "w-[10px] h-[10px] rounded-full absolute top-0 right-1 bg-[#40d132]",
   noramlFlex: "flex items-center",
+  navNormal:
+    "hover:text-black font-medium px-3 pb-5 lg:py-5 hover:border-b-black border-b-[3px] border-b-transparent transition-colors duration-300 ease-linear delay-0",
+  navActive:
+    "text-black font-medium px-3 pb-5 lg:py-5 border-b-black border-b-[3px] transition-colors duration-300 ease-linear delay-0",
 };
 
 export default styles;

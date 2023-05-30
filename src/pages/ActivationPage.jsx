@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { axiosInstanceJsonData } from "../utils/axiosInstance";
+import { axiosInstanceJsonDataWithCredentials } from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const ActivationPage = () => {
   const { activation_token } = useParams();
@@ -10,10 +11,14 @@ const ActivationPage = () => {
     const sendRequest = async () => {
       try {
         if (activation_token) {
-          const res = await axiosInstanceJsonData.post("/users/activate-user", {
-            activation_token,
-          });
-          console.log(res);
+          const res = await axiosInstanceJsonDataWithCredentials.post(
+            "/users/activate-user",
+            {
+              activation_token,
+            }
+          );
+          toast.success(res.data.message);
+          console.log(res.data);
         }
       } catch (err) {
         console.log(err);
@@ -22,7 +27,7 @@ const ActivationPage = () => {
     };
 
     sendRequest();
-  }, [activation_token]);
+  }, []);
 
   return (
     <div className=" w-full h-screen flex justify-center items-center">

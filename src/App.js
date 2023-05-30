@@ -4,15 +4,30 @@ import AuthLayout from "./layouts/AuthLayout";
 import LandingLayout from "./layouts/LandingLayout";
 import AppLayout from "./layouts/AppLayout";
 import Orders from "./pages/Orders";
-import Home from "./pages/Home";
 import Message from "./pages/Message";
 import Messages from "./pages/Messages";
-import { LoginPage, SignupPage, ActivationPage } from "./Routes.js";
+import {
+  LoginPage,
+  SignupPage,
+  ActivationPage,
+  HomePage,
+  FaqPage,
+  EventsPage,
+  ShopPage,
+  ProductPage,
+} from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./custom-toastify.css";
+import { useEffect } from "react";
+import store from "./redux/store";
+import { loadUser } from "./redux/actions/user.action";
 
 const App = () => {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -20,11 +35,27 @@ const App = () => {
       children: [
         {
           path: "/",
-          element: <Home />,
+          element: <HomePage />,
         },
         {
           path: "/orders",
           element: <Orders />,
+        },
+        {
+          path: "/products",
+          element: <ProductPage />,
+        },
+        {
+          path: "/shops",
+          element: <ShopPage />,
+        },
+        {
+          path: "/events",
+          element: <EventsPage />,
+        },
+        {
+          path: "/about",
+          element: <FaqPage />,
         },
       ],
     },
