@@ -25,7 +25,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`${styles.section} sticky top-0 shadow-sm  bg-white flex flex-col px-4 lg:px-12 border-b border-b-[#F4F4F4] z-50`}
+      className={`${styles.section} sticky top-0 shadow-sm  bg-white flex flex-col px-4 lg:px-12 border-b border-b-[#F4F4F4] z-30`}
     >
       <div
         className={` w-full flex items-center justify-between lg:space-x-5 pt-4 pb-4 lg:pb-0  `}

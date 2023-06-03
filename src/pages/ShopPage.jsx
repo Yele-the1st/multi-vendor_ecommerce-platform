@@ -1,7 +1,8 @@
 import React from "react";
+import ProductOverview from "../components/ProductOverview";
 
 const ShopPage = () => {
-  return <div>BestSellingPage</div>;
+  return <div></div>;
 };
 
 export default ShopPage;
