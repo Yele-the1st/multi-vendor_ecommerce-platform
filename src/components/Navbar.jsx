@@ -15,13 +15,13 @@ import { cardData } from "../data/CategoryData";
 import { productData } from "../static/data";
 import SearchBar from "./SearchBar";
 import NavLinks from "./NavLinks";
+import { useSelector } from "react-redux";
+import { backend_url } from "../utils/axiosInstance";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-
-  const handleVisible = () => {
-    setVisible(!visible);
-  };
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  console.log(isAuthenticated, user);
 
   return (
     <div
@@ -38,19 +38,33 @@ const Navbar = () => {
         {/* Search box Header */}
         <SearchBar className={"hidden lg:flex"} data={productData} />
 
-        <div className=" flex items-center  ">
-          <Link
-            to={`/auth/login`}
-            className=" hidden lg:block py-2.5 px-4 min-h-[36px] min-w-[36px] whitespace-nowrap font-Ubuntu font-bold text-center rounded-full hover:bg-[#f6f6f4] "
-          >
-            Sign in
-          </Link>
-          <Link
-            to={`/seller`}
-            className=" hidden py-2.5 px-4 min-h-[36px] min-w-[36px] whitespace-nowrap font-Ubuntu font-bold text-center rounded-full hover:bg-[#f6f6f4] "
-          >
-            Become a Seller
-          </Link>
+        <div className=" flex items-center space-x-1  ">
+          {isAuthenticated ? (
+            <Link
+              to="/profile"
+              className=" flex items-center relative py-2.5 px-4 min-h-[36px] min-w-[36px] rounded-full  hover:bg-[#f6f6f4] "
+            >
+              {user?.avatar ? (
+                <div className="w-8 h-8 mr-1 rounded-full">
+                  <img
+                    src={`${backend_url}${user?.avatar}`}
+                    className=" h-full w-full rounded-full object-center object-cover "
+                    alt=""
+                  />
+                </div>
+              ) : (
+                <UserCircleIcon className="h-7 w-7 text-[#d3d3d3]" />
+              )}
+              <AiFillCaretDown size={14} className=" text-[#d3d3d3] " />
+            </Link>
+          ) : (
+            <Link
+              to={`/auth/login`}
+              className=" py-2.5 px-4 min-h-[36px] min-w-[36px] whitespace-nowrap font-Ubuntu font-bold text-center rounded-full hover:bg-[#f6f6f4] "
+            >
+              Sign in
+            </Link>
+          )}
 
           <button className=" relative py-2.5 px-4 min-h-[36px] min-w-[36px]  rounded-full hover:bg-[#f6f6f4] ">
             <HeartIcon className="w-6 h-6 stroke-2 " />
@@ -66,17 +80,13 @@ const Navbar = () => {
               0
             </span>
           </button>
-          <button className=" flex items-center relative py-2.5 px-4 min-h-[36px] min-w-[36px] rounded-full  hover:bg-[#f6f6f4] ">
-            <UserCircleIcon className="h-7 w-7 text-[#d3d3d3]" />
-            <AiFillCaretDown size={14} className=" text-[#d3d3d3] " />
-          </button>
         </div>
       </div>
       <div
         className={` relative  w-full flex ${styles.section} justify-between items-center h-[65px] font-Ubuntu text-gray-600`}
       >
         <button
-          onClick={handleVisible}
+          onClick={() => setVisible(!visible)}
           className={`flex items-center  gap-3 pb-5 lg:py-5 lg:hover:border-b-black lg:border-b-[3px] hover:text-black  ${
             visible ? "border-b-black text-black" : "border-b-transparent"
           } transition-colors duration-300 ease-in-out delay-0`}
@@ -91,10 +101,12 @@ const Navbar = () => {
             <div className="lg:gap-1 grid grid-cols-1 lg:grid-cols-3 items-start max-h-[calc(100vh-250px)] lg:max-h-max  ">
               {cardData.map((card, index) => (
                 <CategoryItems
+                  link={`/products?category=${card.title}`}
                   key={index}
                   title={card.title}
                   description={card.description}
                   imageUrl={card.imageUrl}
+                  setVisible={setVisible}
                 />
               ))}
             </div>

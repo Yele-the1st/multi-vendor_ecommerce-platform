@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 
-const CategoryItems = ({ title, description, imageUrl }) => {
+const CategoryItems = ({ setVisible, link, title, description, imageUrl }) => {
   return (
     <div>
       <Link
-        to={`/auth/login`}
+        to={link}
+        onClick={() => setVisible(false)}
         className="w-full max-w-full flex py-7 pl-7 pr-9 hover:bg-[#f6f6f4] rounded-[20px] justify-between items-center transition-all duration-300 ease-in-out delay-0  "
       >
         <div className=" flex items-center">

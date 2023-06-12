@@ -57,6 +57,7 @@ const Login = () => {
       resetEmailInput();
       resetPasswordInput();
       navigate("/");
+      window.location.reload(true);
     } catch (error) {
       toast.error(error.response.data.message);
       console.log(error);

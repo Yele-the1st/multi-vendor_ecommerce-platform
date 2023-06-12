@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "../styles/styles";
-import image from "../assets/images/pexels-george-dolgikh-1666067-removebg-preview.png";
+import styles from "../../styles/styles";
+import image from "../../assets/images/pexels-george-dolgikh-1666067-removebg-preview.png";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 const Hero = () => {

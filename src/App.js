@@ -15,17 +15,21 @@ import {
   EventsPage,
   ShopPage,
   ProductPage,
+  ProductsPage,
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./custom-toastify.css";
 import { useEffect } from "react";
 import store from "./redux/store";
-import { loadUser } from "./redux/actions/user.action";
+import { loadUser } from "./redux/actions/userAction";
+import { useDispatch } from "react-redux";
 
 const App = () => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    store.dispatch(loadUser());
+    dispatch(loadUser());
   }, []);
 
   const router = createBrowserRouter([
@@ -40,6 +44,10 @@ const App = () => {
         {
           path: "/orders",
           element: <Orders />,
+        },
+        {
+          path: "/products",
+          element: <ProductsPage />,
         },
         {
           path: "/product/:id",

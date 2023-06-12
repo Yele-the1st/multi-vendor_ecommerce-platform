@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
-import ProductCard from "./ProductCard";
-import styles from "../styles/styles";
-import { productData } from "../static/data";
+import ProductCard from "../ProductCard";
+import styles from "../../styles/styles";
+import { productData } from "../../static/data";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
 
 const BestDealz = () => {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
+  const submitHandler = () => {
+    navigate(`/products?bestselling=true`);
+  };
 
   useEffect(() => {
     const d =
@@ -28,6 +33,7 @@ const BestDealz = () => {
       </div>
       <div className=" my-12 flex justify-center">
         <button
+          onClick={submitHandler}
           className={` py-3 px-4 lg:py-3 lg:px-4 flex items-center gap-3 rounded-xl whitespace-nowrap font-Ubuntu cursor-pointer shadow bg-transparent font-medium max-w-max hover:gap-5 hover:bg-black hover:text-white  transition-all duration-300 ease-linear delay-0`}
         >
           Shop Bestsellers

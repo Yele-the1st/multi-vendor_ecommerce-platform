@@ -33,7 +33,7 @@ const ProductCard = ({ item }) => {
           />
         </button>
         <button
-          className={` group-hover:opacity-100  sm:opacity-0  absolute left-3 font-Ubuntu right-3 bottom-3 border p-1 text-center rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
+          className={` hidden lg:block group-hover:opacity-100  sm:opacity-0  absolute left-3 font-Ubuntu right-3 bottom-3 border p-1 text-center rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
           onClick={() => setOpen(!open)}
         >
           quick view

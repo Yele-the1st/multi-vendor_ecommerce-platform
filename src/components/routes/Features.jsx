@@ -5,8 +5,7 @@ import {
   ShieldCheckIcon,
   ArrowRightIcon,
 } from "@heroicons/react/20/solid";
-import styles from "../styles/styles";
-import excitedimage from "../assets/images/excitedimg.png";
+import styles from "../../styles/styles";
 
 const features = [
   {

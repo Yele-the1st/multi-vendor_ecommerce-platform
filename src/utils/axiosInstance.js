@@ -28,3 +28,5 @@ export const axiosInstanceGet = axios.create({
   baseURL: "http://localhost:6600/api/",
   withCredentials: true,
 });
+
+export const backend_url = "http://localhost:6600/uploads/";

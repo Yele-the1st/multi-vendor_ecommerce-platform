@@ -1,5 +1,5 @@
 import ProjectCard from "./ProjectCard";
-import Carousel from "./Carousel";
+import Carousel from "./carousels/Carousel";
 import { Category } from "../data/CategoryData";
 import styles from "../styles/styles";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";

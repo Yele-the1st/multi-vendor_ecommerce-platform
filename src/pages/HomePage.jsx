@@ -1,9 +1,10 @@
-import Hero from "../components/Hero";
+import Hero from "../components/routes/Hero";
 import CategoryPane from "../components/CategoryPane";
-import Features from "../components/Features";
-import BestDealz from "../components/BestDealz";
-import Events from "../components/Events";
+import Features from "../components/routes/Features";
+import BestDealz from "../components/routes/BestDealz";
+import EventsBanner from "../components/EventsBanner";
 import Featured from "../components/Featured";
+import Sponsored from "../components/routes/Sponsored";
 
 const HomePage = () => {
   return (
@@ -12,8 +13,9 @@ const HomePage = () => {
       <CategoryPane />
       <Features />
       <BestDealz />
-      <Events />
+      <EventsBanner />
       <Featured />
+      <Sponsored />
     </div>
   );
 };
