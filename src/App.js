@@ -2,6 +2,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
 import LandingLayout from "./layouts/LandingLayout";
+import ShopLayout from "./layouts/ShopLayout";
 import AppLayout from "./layouts/AppLayout";
 import Orders from "./pages/Orders";
 import Message from "./pages/Message";
@@ -16,20 +17,29 @@ import {
   ShopPage,
   ProductPage,
   ProductsPage,
+  ProfilePage,
+  CreateShopPage,
+  ShopActivationPage,
+  ShopLoginPage,
+  ShopHomePage,
+  ShopDashboardPage,
+  ShopCreateProductPage,
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./custom-toastify.css";
 import { useEffect } from "react";
-import store from "./redux/store";
 import { loadUser } from "./redux/actions/userAction";
 import { useDispatch } from "react-redux";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import { loadSeller } from "./redux/actions/sellerAction";
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadUser());
+    dispatch(loadSeller());
   }, []);
 
   const router = createBrowserRouter([
@@ -50,7 +60,7 @@ const App = () => {
           element: <ProductsPage />,
         },
         {
-          path: "/product/:id",
+          path: "/product/:name",
           element: <ProductPage />,
         },
         {
@@ -79,6 +89,11 @@ const App = () => {
           path: "/app/message/:id",
           element: <Message />,
         },
+
+        {
+          path: "/app/profile",
+          element: <ProtectedRoutes type={"user"} children={<ProfilePage />} />,
+        },
       ],
     },
     {
@@ -96,6 +111,45 @@ const App = () => {
         {
           path: "/auth/activation/:activation_token",
           element: <ActivationPage />,
+        },
+        {
+          path: "/auth/shop/create-shop",
+          element: <CreateShopPage />,
+        },
+        {
+          path: "/auth/shop/activation/:activation_token",
+          element: <ShopActivationPage />,
+        },
+        {
+          path: "/auth/shop/login",
+          element: <ShopLoginPage />,
+        },
+      ],
+    },
+    {
+      path: "/shop/",
+      element: <ShopLayout />,
+      children: [
+        {
+          path: "/shop/:id",
+          element: (
+            <ProtectedRoutes type={"seller"} children={<ShopHomePage />} />
+          ),
+        },
+        {
+          path: "/shop/dashboard",
+          element: (
+            <ProtectedRoutes type={"seller"} children={<ShopDashboardPage />} />
+          ),
+        },
+        {
+          path: "/shop/create-product",
+          element: (
+            <ProtectedRoutes
+              type={"seller"}
+              children={<ShopCreateProductPage />}
+            />
+          ),
         },
       ],
     },

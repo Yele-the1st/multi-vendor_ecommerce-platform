@@ -22,7 +22,7 @@ const SearchBar = ({ data, className }) => {
           : "bg-[#f6f6f4]"
       }`}
     >
-      <div className="flex-1 flex items-center z-40 ">
+      <div className="flex-1 flex items-center z-20 ">
         <input
           name="Search"
           placeholder="Search for anything... "

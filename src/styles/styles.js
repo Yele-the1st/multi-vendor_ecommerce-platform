@@ -21,6 +21,10 @@ const styles = {
     "hover:text-black font-medium px-3 pb-5 lg:py-5 hover:border-b-black border-b-[3px] border-b-transparent transition-colors duration-300 ease-linear delay-0",
   navActive:
     "text-black font-medium px-3 pb-5 lg:py-5 border-b-black border-b-[3px] transition-colors duration-300 ease-linear delay-0",
+  navNormalMobile:
+    "text-black font-medium  mb-2 lg:py-5 hover:bg-[#f6f6f4] px-4 py-2 rounded-2xl transition-colors duration-300 ease-linear delay-0",
+  navActiveMobile:
+    "text-black font-medium  mb-2 lg:py-5 bg-[#f6f6f4] px-4 py-2 rounded-2xl transition-colors duration-300 ease-linear delay-0",
 };
 
 export default styles;

@@ -8,13 +8,7 @@ const useInput = (validateValue) => {
 
   let errorMessage = message;
 
-  //   convertToBoolean is used to change what ever value we get from the errorStat
-  //   to a Boolean value which is then used to ser valueisValid
-
-  const convertToBoolean = (value) => {
-    return value === "true";
-  };
-  const valueIsValid = convertToBoolean(errorStat);
+  let valueIsValid = !errorStat;
 
   //   isTouched would determine when the input would be validated
   //   and checked to have an error as below

@@ -4,12 +4,12 @@ import {
   axiosInstanceJsonDataWithCredentials,
 } from "../../utils/axiosInstance";
 
-export const loginUser = createAsyncThunk(
-  "user/loginUser",
+export const loginSeller = createAsyncThunk(
+  "shop/loginSeller",
   async ({ email, password }) => {
     try {
       const response = await axiosInstanceJsonDataWithCredentials.post(
-        "/users/login-user",
+        "/shops/login-shop",
         { email, password } // Shorthand object notation
       );
 
@@ -21,30 +21,21 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const loadUser = createAsyncThunk("user/loadUser", async () => {
+export const loadSeller = createAsyncThunk("shop/loadSeller", async () => {
   try {
-    const response = await axiosInstanceGet.get(
-      `/users/get-user?cache=${Math.random()}`,
-      {
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-          Expires: "0",
-        },
-      }
-    );
-    console.log(response.data.user);
-    return response.data.user;
+    const response = await axiosInstanceGet.get("/shops/get-shop");
+    console.log(response.data.seller);
+    return response.data.seller;
   } catch (error) {
     console.log(error.response.data.message);
     throw error.response.data.message;
   }
 });
 
-export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
+export const logoutSeller = createAsyncThunk("shop/logoutSeller", async () => {
   try {
-    const response = await axiosInstanceGet.get("/users/logout-user");
-    return response.data.user;
+    const response = await axiosInstanceGet.get("/shops/logout-shop");
+    return response.data.seller;
   } catch (error) {
     console.error(error.response.data.message);
     throw error.response.data.message;

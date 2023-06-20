@@ -1,5 +1,5 @@
-import useInput from "../hooks/useInput";
-import logo from "../assets/logo-blue.png";
+import useInput from "../../hooks/useInput";
+import logo from "../../assets/logo-blue.png";
 import { Link, useNavigate } from "react-router-dom";
 import {
   EyeIcon,
@@ -8,13 +8,16 @@ import {
   CheckIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { emailValidation, passwordValidation } from "../validation/validation";
+import {
+  emailValidation,
+  passwordValidation,
+} from "../../validation/validation";
 import { toast } from "react-toastify";
-import backgroundImage from "../assets/peeps.svg";
+import backgroundImage from "../../assets/peeps.svg";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../redux/actions/userAction";
+import { loginSeller } from "../../redux/actions/sellerAction";
 
-const Login = () => {
+const LoginShop = () => {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,8 +54,8 @@ const Login = () => {
     }
     resetEmailInput();
     resetPasswordInput();
-    navigate("/");
-    dispatch(loginUser({ email: email, password: password }));
+    navigate("/shop/dashboard");
+    dispatch(loginSeller({ email: email, password: password }));
     toast.success("Successfully Logged in");
   };
 
@@ -65,7 +68,7 @@ const Login = () => {
           </Link> */}
 
           <h2 className=" mt-6 text-center text-3xl font-extrabold text-gray-900 font-Fira">
-            Log in to your account
+            Log in to your Shop
           </h2>
         </div>
 
@@ -182,7 +185,7 @@ const Login = () => {
                 Don't have an account yet?
               </div>
               <span className="text-sm tracking-wide font-Ubuntu text-indigo-600">
-                <Link to={`/auth/signup`}>Sign up</Link>
+                <Link to={`/app/create-shop`}>Create a Shop</Link>
               </span>
             </div>
           </form>
@@ -192,4 +195,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginShop;

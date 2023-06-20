@@ -1,89 +1,354 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../styles/styles";
+import { HeartIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import {
+  ArchiveBoxIcon,
   StarIcon,
-  HandThumbUpIcon,
-  HandThumbDownIcon,
-  ClockIcon,
-  ArrowPathIcon,
-  CheckIcon,
-} from "@heroicons/react/24/outline";
-import SingleCarousel from "../components/carousels/SingleCarousel";
-import Card from "../components/card/Card";
-import { productData } from "../static/data";
-import { Link } from "react-router-dom";
+  PaperAirplaneIcon,
+} from "@heroicons/react/24/solid";
 
-const ProductDetails = () => {
+import { Link, useNavigate } from "react-router-dom";
+import Accordian from "./accordian/Accordian";
+
+const ProductDetails = ({ data }) => {
+  const [count, setCount] = useState(1);
+  const [click, setClick] = useState(false);
+  const [select, setSelect] = useState(0);
+  const navigate = useNavigate();
+
+  const decrementCount = () => {
+    if (count > 1) {
+      setCount(count - 1);
+    }
+  };
+  const incrementCount = () => {
+    setCount(count + 1);
+  };
+
   return (
-    <div className={` ${styles.section} px-4 lg:px-12`}>
-      <div className="py-8 sm:py-10">
-        <div className=" float-left w-[67%] mb-9">
-          <div className=" mr-8 ">
-            <div className="pb-6">
-              <h1>Back to search results</h1>
+    <div className="bg-white font-Ubuntu">
+      {data ? (
+        <div className={` ${styles.section} px-4 lg:px-12`}>
+          <div className="py-8 sm:py-10">
+            <div className=" lg:float-left lg:w-[67%] mb-9">
+              <div className=" mr-8 ">
+                <div className="pb-6 items-center gap-2 flex cursor-pointer">
+                  <ArrowLeftIcon className="w-4 h-4 stroke-2" />
+                  <h1 className=" font-semibold">Back to search results</h1>
+                </div>
+                <div className="relative">
+                  <button
+                    className={`hover:scale-110 z-10 absolute min-h-[36px] min-w-[36px] -top-6 -right-6 lg:right-0  p-2 rounded-full shadow-xl transition-all duration-300 ease-in-out delay-0`}
+                    onClick={() => setClick(!click)}
+                  >
+                    <HeartIcon
+                      className={` ${
+                        click ? "fill-pink-600 stroke-none" : "fill-none"
+                      } w-7 h-7 stroke-[2] `}
+                      title="Add to wishlist"
+                    />
+                  </button>
+                  <div className="flex">
+                    <div className=" ml-[66px] max-w-[794px] relative order-2 flex-grow-[6] flex-shrink-[1] flex-[0%]">
+                      <div className="pt-[80%] h-0 relative">
+                        <div className=" duration-700 ease-in absolute left-0 overflow-hidden top-0 h-full w-full">
+                          <img
+                            src={data.image_Url[select].url}
+                            alt=""
+                            className=" overflow-clip max-h-full relative -translate-y-[50%] top-[50%] block mx-auto max-w-full  rounded-[6px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="absolute left-0 bottom-0 top-0 overflow-y-scroll">
+                      <div className=" flex flex-col  items-end ">
+                        <div
+                          className={`${
+                            select === 0 ? "border-2 border-black" : "null"
+                          } cursor-pointer h-[70px] w-[70px] mb-1.5 mr-1.5 rounded-[6px] overflow-hidden bg-[#eaeaea] flex-shrink-0`}
+                        >
+                          <img
+                            src={data?.image_Url[0].url}
+                            alt=""
+                            className=" max-w-full w-full overflow-clip"
+                            onClick={() => setSelect(0)}
+                          />
+                        </div>
+                        <div
+                          className={`${
+                            select === 1 ? "border-2 border-black" : "null"
+                          } cursor-pointer h-[70px] w-[70px] mb-1.5 mr-1.5 rounded-[6px] overflow-hidden bg-[#eaeaea] flex-shrink-0`}
+                        >
+                          <img
+                            src={data?.image_Url[1].url}
+                            alt=""
+                            className=" max-w-full w-full overflow-clip"
+                            onClick={() => setSelect(1)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="w-auto">
-              <SingleCarousel>
-                {productData.map((card) => (
-                  <Card key={card.id} item={card} />
-                ))}
-              </SingleCarousel>
-            </div>
-          </div>
-        </div>
 
-        <div className="mb-8 float-right w-[33%] flex flex-col ">
-          <div className="pr-8 flex flex-col"></div>
-          <div className=" flex items-center justify-between">
-            <h3 className=" font-normal">1 AI generated Image</h3>
-            <h2 className=" font-semibold">$ 59.99</h2>
-          </div>
-          <p className=" text-[gray] my-2.5 ">
-            I will ceate a unique high quality AI generated image based on a
-            description that you give me
-          </p>
-          <div className=" flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2.5 ">
-              <ClockIcon className="w-6 h-6" />
-              <span>2 days Delivery</span>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <ArrowPathIcon className="w-6 h-6" />
-              <span>3 Revisions</span>
-            </div>
-          </div>
-          <button className="bg-black text-white font-semibold text-base rounded-md py-3 px-6 items-center">
-            Continue
-          </button>
-        </div>
+            <div className="mb-2 lg:float-right lg:w-[33%] flex flex-col ">
+              <div className="pr-8 flex flex-col"></div>
+              <div className=" flex items-center justify-between">
+                <h3 className=" font-semibold text-[#A5192E]">
+                  Low in Stock, only 3 left
+                </h3>
+                <ArchiveBoxIcon className="w-5 h-5 text-[#A5192E]" />
+              </div>
+              <h2 className=" font-semibold text-2xl my-2">
+                ${data.price ? data.price : data.discount_price}
+              </h2>
+              <p className=" text-[#595959] text-sm mb-2 ">
+                Shipping and taxes calculated at checkout.
+              </p>
+              <div className=" font-semibold text-lg mb-1">
+                <p>{data.name}</p>
+              </div>
+              <div className=" flex items-center gap-3 mb-3">
+                <p>Rating:</p>
+                <div className="flex items-center gap-1">
+                  {[0, 1, 2, 3, 4].map((rating) => (
+                    <StarIcon
+                      key={rating}
+                      className={`
+                  ${data.rating > rating ? "text-gray-900" : "text-gray-200"} 
+                  "h-4 w-4 flex-shrink-0"
+                `}
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+              </div>
 
-        <div className=" float-right w-[33%]">
-          <div className="pr-8">
-            <div className="flex items-center gap-2.5 text-[gray]">
-              <CheckIcon className=" w-6 h-6 stroke-green-500 " />
-              <span>Prompt writing</span>
+              <div className="mb-4">
+                <button
+                  className=" bg-gradient-to-r from-pink-500 to-pink-600 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out "
+                  onClick={decrementCount}
+                >
+                  -
+                </button>
+                <span className="bg-gray-200 text-gray-800 font-medium px-4 py-3">
+                  {count}
+                </span>
+                <button
+                  className=" bg-gradient-to-r from-pink-600 to-pink-500 text-white font-bold rounded-r px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out "
+                  onClick={incrementCount}
+                >
+                  +
+                </button>
+              </div>
+
+              <button className=" group hover:scale-y-105 hover:shadow-xl border-2 border-black mb-3 font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out">
+                <p className="group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out">
+                  Buy it NOW
+                </p>
+              </button>
+              <button className=" group bg-black hover:scale-y-105 hover:shadow-xl  text-white mb-3   font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out">
+                <p className="group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out">
+                  Add to Cart
+                </p>
+              </button>
+              <button className=" group hover:scale-y-105 hover:shadow-xl hover:bg-[#f4f4f4]  mb-3  font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out">
+                <div className="group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out flex gap-2 justify-center items-center">
+                  <HeartIcon className="w-5 h-5 fill-pink-500 stroke-none" />
+                  <p>Add to favourites</p>
+                </div>
+              </button>
             </div>
-            <div className="flex items-center gap-2.5 text-[gray]">
-              <CheckIcon className=" w-6 h-6 stroke-green-500 " />
-              <span>Prompt writing</span>
+
+            <div className=" lg:float-right space-y-2 lg:w-[33%]">
+              <div className=" mb-6">
+                <Accordian
+                  title={`Description`}
+                  content={data.description}
+                  classNameButton={"py-3 px-6"}
+                  classNameTitle={"font-semibold"}
+                  classNameContent={
+                    "pl-8 pb-4 tracking-wider whitespace-pre-line"
+                  }
+                />
+                <Accordian
+                  title={`Meet your Seller`}
+                  content={
+                    <div className="w-full">
+                      <Link to={`/`}>
+                        <div className="flex font-Ubuntu mb-2 font-semibold items-center gap-2.5 ">
+                          <img
+                            className="w-[46px] h-[46px]  object-cover rounded-full "
+                            src={data.shop.shop_avatar.url}
+                            alt=""
+                          />
+                          <div className="flex flex-col">
+                            <span className="text-sm">{data.shop.name}</span>
+                            <div className="flex items-center gap-1">
+                              {[0, 1, 2, 3, 4].map((rating) => (
+                                <StarIcon
+                                  key={rating}
+                                  className={`
+                               ${
+                                 data.shop.ratings > rating
+                                   ? "text-gray-900"
+                                   : "text-gray-200"
+                               } 
+                                  "h-4 w-4 flex-shrink-0"
+                                 `}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                      <button className=" group hover:scale-y-105 hover:shadow-xl my-3 w-full border-2 border-black mb-2 font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out">
+                        <div className=" group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out flex gap-2 justify-center items-center">
+                          <p>Message Seller</p>
+                          <PaperAirplaneIcon className="w-5 h-5" />
+                        </div>
+                      </button>
+                    </div>
+                  }
+                  classNameButton={"py-3 px-6"}
+                  classNameTitle={"font-semibold whitespace-nowrap"}
+                  classNameContent={"pl-8 pb-4"}
+                />
+              </div>
             </div>
-            <div className="flex items-center gap-2.5 text-[gray]">
-              <CheckIcon className=" w-6 h-6 stroke-green-500 " />
-              <span>Prompt writing</span>
-            </div>
-            <div className="flex items-center gap-2.5 text-[gray]">
-              <CheckIcon className=" w-6 h-6 stroke-green-500 " />
-              <span>Prompt writing</span>
+            <div className=" lg:clear-left lg:w-[60%]">
+              <ProductDetailsInfo data={data} />
             </div>
           </div>
         </div>
-        <div className=" clear-left w-[60%]">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae
-          placeat tempore quidem fugiat suscipit delectus ipsam doloremque nam
-          ab, illum laborum cupiditate enim, quaerat distinctio impedit in
-          consequatur. Delectus, dolore?
+      ) : null}
+    </div>
+  );
+};
+
+const ProductDetailsInfo = ({ data }) => {
+  const [active, setActive] = useState(1);
+  return (
+    <div className=" py-4 ">
+      <div className=" w-full flex justify-between border-b mt-10 py-2">
+        <div
+          className={` ${
+            active === 1 ? "text-gray-900" : "text-gray-400"
+          }   relative cursor-pointer`}
+        >
+          <h5
+            className=" leading-5 font-semibold  lg:text-lg "
+            onClick={() => setActive(1)}
+          >
+            Product Details
+          </h5>
+        </div>
+        <div
+          className={` ${
+            active === 2 ? "text-gray-900" : "text-gray-400"
+          }  relative cursor-pointer`}
+        >
+          <h5
+            className=" leading-5 font-semibold  lg:text-lg "
+            onClick={() => setActive(2)}
+          >
+            Product Reviews
+          </h5>
+        </div>
+        <div
+          className={` ${
+            active === 3 ? "text-gray-900" : "text-gray-400"
+          }  relative cursor-pointer`}
+        >
+          <h5
+            className="  leading-5 font-semibold  lg:text-lg "
+            onClick={() => setActive(3)}
+          >
+            Seller Information
+          </h5>
         </div>
       </div>
+      {active === 1 ? (
+        <p className=" py-2 leading-8 pb-10 whitespace-pre-line">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque eius
+          ipsum odio mollitia eum, fugit modi porro fugiat, distinctio eaque
+          dolor id perferendis. Commodi quod modi, inventore provident maiores
+          incidunt.
+        </p>
+      ) : null}
+      {active === 2 ? (
+        <div className=" w-full justify-center flex min-h-[40vh] items-center">
+          <p className=" py-2 leading-8 pb-10 whitespace-pre-line">
+            No reviews yet!
+          </p>
+        </div>
+      ) : null}
+      {active === 3 ? (
+        <div className=" p-5 w-full lg:justify-between lg:gap-9  flex flex-col lg:flex-row ">
+          <div className=" w-full lg:w-1/2  ">
+            <div className="flex font-Ubuntu mb-2 font-semibold items-center gap-2.5 ">
+              <img
+                className="w-[46px] h-[46px]  object-cover rounded-full "
+                src={data.shop.shop_avatar.url}
+                alt=""
+              />
+              <div className="flex flex-col">
+                <span className="text-sm">{data.shop.name}</span>
+                <div className="flex items-center gap-1">
+                  {[0, 1, 2, 3, 4].map((rating) => (
+                    <StarIcon
+                      key={rating}
+                      className={`
+                               ${
+                                 data.shop.ratings > rating
+                                   ? "text-gray-900"
+                                   : "text-gray-200"
+                               } 
+                                  "h-4 w-4 flex-shrink-0"
+                                 `}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+            <p className=" pt-2 ">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Repellendus architecto non saepe molestias perspiciatis provident
+              similique ut magnam reprehenderit fugiat nemo, rem est esse
+              repellat natus incidunt ad nam obcaecati? lorem Lorem ipsum dolor
+              sit amet, consectetur adipisicing elit. Odit sapiente omnis sequi,
+              veniam optio quos, sit pariatur modi vero sunt quis iure hic magni
+              ad officiis cum. Sint, id perspiciatis! Lorem, ipsum dolor sit
+              amet consectetur adipisicing elit. Dicta aspernatur eius nihil
+              recusandae aperiam quaerat veritatis fugiat esse ab doloribus,
+              voluptas laboriosam exercitationem aliquid id itaque assumenda
+              voluptatem repudiandae cumque.
+            </p>
+          </div>
+          <div className=" w-full lg:w-1/2 mt-5 lg:mt-0 flex flex-col lg:items-end">
+            <div className="text-left whitespace-nowrap">
+              <h5 className=" font-semibold">
+                Joined on: <span className="font-medium">14th March 2023</span>
+              </h5>
+              <h5 className=" font-semibold pt-3">
+                Total Products: <span className="font-medium">1233</span>
+              </h5>
+              <h5 className=" font-semibold pt-3">
+                Total Reviews: <span className="font-medium">324</span>
+              </h5>
+              <Link to={`/`}>
+                <button className=" w-full mt-5 group bg-black hover:scale-y-105 hover:shadow-xl  text-white mb-3   font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out">
+                  <p className="group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out">
+                    Visit shop
+                  </p>
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

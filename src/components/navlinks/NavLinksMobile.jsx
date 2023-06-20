@@ -1,15 +1,16 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import styles from "../styles/styles";
+import styles from "../../styles/styles";
 
-const NavLinks = ({ className }) => {
+const NavLinks = ({ setVisible, className }) => {
   return (
     <div className={` ${className} `}>
       <NavLink
         exact
         to="/"
+        onClick={() => setVisible(false)}
         className={({ isActive }) =>
-          isActive ? `${styles.navActive}` : `${styles.navNormal}`
+          isActive ? `${styles.navActiveMobile}` : `${styles.navNormalMobile}`
         }
       >
         Home
@@ -17,8 +18,9 @@ const NavLinks = ({ className }) => {
 
       <NavLink
         to="/products"
+        onClick={() => setVisible(false)}
         className={({ isActive }) =>
-          isActive ? `${styles.navActive}` : `${styles.navNormal}`
+          isActive ? `${styles.navActiveMobile}` : `${styles.navNormalMobile}`
         }
       >
         Products
@@ -26,8 +28,9 @@ const NavLinks = ({ className }) => {
 
       <NavLink
         to="/shops"
+        onClick={() => setVisible(false)}
         className={({ isActive }) =>
-          isActive ? `${styles.navActive}` : `${styles.navNormal}`
+          isActive ? `${styles.navActiveMobile}` : `${styles.navNormalMobile}`
         }
       >
         Shops
@@ -35,8 +38,9 @@ const NavLinks = ({ className }) => {
 
       <NavLink
         to="/events"
+        onClick={() => setVisible(false)}
         className={({ isActive }) =>
-          isActive ? `${styles.navActive}` : `${styles.navNormal}`
+          isActive ? `${styles.navActiveMobile}` : `${styles.navNormalMobile}`
         }
       >
         Events
@@ -44,8 +48,9 @@ const NavLinks = ({ className }) => {
 
       <NavLink
         to="/about"
+        onClick={() => setVisible(false)}
         className={({ isActive }) =>
-          isActive ? `${styles.navActive}` : `${styles.navNormal}`
+          isActive ? `${styles.navActiveMobile}` : `${styles.navNormalMobile}`
         }
       >
         About

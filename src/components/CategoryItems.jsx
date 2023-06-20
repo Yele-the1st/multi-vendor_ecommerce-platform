@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const CategoryItems = ({ setVisible, link, title, description, imageUrl }) => {
   return (
-    <div>
+    <div className=" pb-3">
       <Link
         to={link}
         onClick={() => setVisible(false)}

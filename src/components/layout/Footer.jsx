@@ -18,7 +18,7 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid";
 const Footer = () => {
   return (
     <div
-      className={`${styles.section} mt-10 font-Ubuntu bg-black text-white flex flex-col px-4 lg:px-12 `}
+      className={`${styles.section} clear-both mt-10 font-Ubuntu bg-black text-white flex flex-col px-4 lg:px-12 `}
     >
       <div className="grid grid-cols-1 sm:gird-cols-3 lg:grid-cols-4 gap-10  py-16 sm:text-center">
         <ul className=" text-center sm:text-start flex sm:block flex-col items-center">
