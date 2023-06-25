@@ -14,7 +14,6 @@ import {
   HomePage,
   FaqPage,
   EventsPage,
-  ShopPage,
   ProductPage,
   ProductsPage,
   ProfilePage,
@@ -24,6 +23,10 @@ import {
   ShopHomePage,
   ShopDashboardPage,
   ShopCreateProductPage,
+  ShopProductsPage,
+  ShopCreateEventPage,
+  ShopEventsPage,
+  ShopCouponsPage,
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,13 +36,17 @@ import { loadUser } from "./redux/actions/userAction";
 import { useDispatch } from "react-redux";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import { loadSeller } from "./redux/actions/sellerAction";
+import {
+  loadAllProduct,
+  loadLatestProduct,
+} from "./redux/actions/productAction";
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadUser());
-    dispatch(loadSeller());
+    dispatch(loadAllProduct());
   }, []);
 
   const router = createBrowserRouter([
@@ -60,13 +67,10 @@ const App = () => {
           element: <ProductsPage />,
         },
         {
-          path: "/product/:name",
+          path: "/product/:id",
           element: <ProductPage />,
         },
-        {
-          path: "/shops",
-          element: <ShopPage />,
-        },
+
         {
           path: "/events",
           element: <EventsPage />,
@@ -149,6 +153,33 @@ const App = () => {
               type={"seller"}
               children={<ShopCreateProductPage />}
             />
+          ),
+        },
+        {
+          path: "/shop/shop-products",
+          element: (
+            <ProtectedRoutes type={"seller"} children={<ShopProductsPage />} />
+          ),
+        },
+        {
+          path: "/shop/create-event",
+          element: (
+            <ProtectedRoutes
+              type={"seller"}
+              children={<ShopCreateEventPage />}
+            />
+          ),
+        },
+        {
+          path: "/shop/shop-events",
+          element: (
+            <ProtectedRoutes type={"seller"} children={<ShopEventsPage />} />
+          ),
+        },
+        {
+          path: "/shop/shop-coupons",
+          element: (
+            <ProtectedRoutes type={"seller"} children={<ShopCouponsPage />} />
           ),
         },
       ],

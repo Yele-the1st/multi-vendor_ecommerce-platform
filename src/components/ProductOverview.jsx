@@ -8,8 +8,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
+import { backend_url } from "../utils/axiosInstance";
 
-const ProductOverview = ({ setOpen, data }) => {
+const ProductOverview = ({ setOpen, seller, item }) => {
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(false);
@@ -30,7 +31,7 @@ const ProductOverview = ({ setOpen, data }) => {
 
   return (
     <div className="bg-white">
-      {data ? (
+      {item ? (
         <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
           <div className=" w-[90%] md:w-[60%] h-[90vh] overflow-y-scroll md:h-[75vh] bg-white rounded-md shadow relative p-4">
             <XMarkIcon
@@ -41,7 +42,7 @@ const ProductOverview = ({ setOpen, data }) => {
               <div className="  sm:col-span-4 lg:col-span-5">
                 <div className="aspect-h-3 aspect-w-2 overflow-hidden rounded-lg bg-gray-100">
                   <img
-                    src={data.image_Url[0].url}
+                    src={`${backend_url}${item.images && item.images[0]}`}
                     alt=""
                     className="object-cover object-center"
                   />
@@ -55,16 +56,19 @@ const ProductOverview = ({ setOpen, data }) => {
               </div>
               <div className="sm:col-span-8 lg:col-span-7">
                 <h2 className="text-2xl font-bold text-gray-900 sm:pr-12 line-clamp-2">
-                  {data.name}
+                  {item.name}
                 </h2>
                 <section aria-labelledby="information-heading" className="mt-2">
                   <div className="flex text-2xl font-Source items-center gap-3">
-                    <h4 className={``}>
-                      ${data.discount_price ? data.discount_price : data.price}
+                    <h4 className={` font-semibold font-Source`}>
+                      $
+                      {item.discountedPrice
+                        ? item.discountedPrice
+                        : item.originalPrice}
                     </h4>
-                    {data.discount_price && data.price && (
-                      <h3 className=" text-lg line-through text-red-500 font-Source ">
-                        ${data.price}
+                    {item.discountedPrice && item.originalPrice && (
+                      <h3 className=" text-lg line-through text-gray-600 font-Source">
+                        ${item.originalPrice}
                       </h3>
                     )}
                   </div>
@@ -75,25 +79,25 @@ const ProductOverview = ({ setOpen, data }) => {
                           <StarIcon
                             key={rating}
                             className={`
-                  ${data.rating > rating ? "text-gray-900" : "text-gray-200"} 
+                  ${item.rating > rating ? "text-gray-900" : "text-gray-200"} 
                   "h-4 w-4 flex-shrink-0"
                 `}
                             aria-hidden="true"
                           />
                         ))}
                       </div>
-                      <p className="sr-only">{data.rating} out of 5 stars</p>
+                      <p className="sr-only">{item.rating} out of 5 stars</p>
                       <a
                         href="#"
                         className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
                       >
-                        {data.rating} reviews
+                        {item.rating} reviews
                       </a>
                     </div>
                   </div>
                 </section>
                 <section className="mt-10 pr-3">
-                  <p className=" line-clamp-[7]">{data.description}</p>
+                  <p className=" line-clamp-[7]">{item.description}</p>
                 </section>
                 <section className="mt-10 flex items-center justify-between pr-3 ">
                   <div>

@@ -49,7 +49,7 @@ const DashboardSideBar = ({ active }) => {
         </div>
         <div className="w-full flex items-center px-3 ">
           <Link
-            to={`/shop/dashboard`}
+            to={`/shop/shop-products`}
             className={` ${
               active === 3
                 ? "bg-pink-200 shadow-lg"
@@ -79,7 +79,7 @@ const DashboardSideBar = ({ active }) => {
         </div>
         <div className="w-full flex items-center px-3 ">
           <Link
-            to={`/shop/dashboard/events`}
+            to={`/shop/shop-events`}
             className={` ${
               active === 5
                 ? "bg-pink-200 shadow-lg"
@@ -92,7 +92,7 @@ const DashboardSideBar = ({ active }) => {
         </div>
         <div className="w-full flex items-center px-3 ">
           <Link
-            to={`/shop/dashboard/create-events`}
+            to={`/shop/create-event`}
             className={` ${
               active === 6
                 ? "bg-pink-200 shadow-lg"
@@ -107,7 +107,7 @@ const DashboardSideBar = ({ active }) => {
         </div>
         <div className="w-full flex items-center px-3 ">
           <Link
-            to={`/shop/dashboard/withdraw-money`}
+            to={`/shop/withdraw-money`}
             className={` ${
               active === 7
                 ? "bg-pink-200 shadow-lg"
@@ -123,7 +123,7 @@ const DashboardSideBar = ({ active }) => {
 
         <div className="w-full flex items-center px-3 ">
           <Link
-            to={`/shop/dashboard/withdraw-money`}
+            to={`/shop/withdraw-money`}
             className={` ${
               active === 8
                 ? "bg-pink-200 shadow-lg"
@@ -136,7 +136,7 @@ const DashboardSideBar = ({ active }) => {
         </div>
         <div className="w-full flex items-center px-3 ">
           <Link
-            to={`/shop/dashboard/withdraw-money`}
+            to={`/shop/shop-coupons`}
             className={` ${
               active === 9
                 ? "bg-pink-200 shadow-lg"
@@ -151,7 +151,7 @@ const DashboardSideBar = ({ active }) => {
         </div>
         <div className="w-full flex items-center px-3 ">
           <Link
-            to={`/shop/dashboard/withdraw-money`}
+            to={`/shop/withdraw-money`}
             className={` ${
               active === 10
                 ? "bg-pink-200 shadow-lg"
@@ -167,7 +167,7 @@ const DashboardSideBar = ({ active }) => {
       </div>
       <div className="w-full mt-20 flex items-center px-3 ">
         <Link
-          to={`/shop/dashboard/withdraw-money`}
+          to={`/shop/withdraw-money`}
           className={` ${
             active === 11
               ? "bg-pink-200 shadow-lg"

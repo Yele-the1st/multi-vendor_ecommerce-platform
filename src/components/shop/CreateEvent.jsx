@@ -11,13 +11,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
 import { TagIcon } from "@heroicons/react/24/solid";
-import { createProduct } from "../../redux/actions/productAction";
 import { toast } from "react-toastify";
-import { resetSuccess } from "../../redux/slices/productSlice";
+import { resetSuccess } from "../../redux/slices/eventSlice";
+import { createEvent } from "../../redux/actions/eventAction";
 
-const CreateProduct = () => {
+const CreateEvent = () => {
   const { seller } = useSelector((state) => state.seller);
-  const { success, error } = useSelector((state) => state.product);
+  const { success, error } = useSelector((state) => state.event);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -29,13 +29,15 @@ const CreateProduct = () => {
   const [originalPrice, setOriginalPrice] = useState("");
   const [discountedPrice, setDiscountedPrice] = useState("");
   const [stock, setStock] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
     if (error) {
       toast.error(error);
     }
     if (success) {
-      toast.success("Product created successfully!");
+      toast.success("Event created successfully!");
       navigate("/shop/dashboard");
       dispatch(resetSuccess()); // Reset the success state
     }
@@ -47,6 +49,35 @@ const CreateProduct = () => {
     let files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
   };
+
+  const handleStartDateChange = (e) => {
+    const startDate = new Date(e.target.value);
+    if (isNaN(startDate.getTime())) {
+      // Handle invalid date value
+      setStartDate(null);
+      return;
+    }
+    const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000); // Add three days in milliseconds
+    setStartDate(startDate);
+    setEndDate(null);
+    document.getElementById("end-date").min = minEndDate
+      .toISOString()
+      .slice(0, 10);
+  };
+
+  const handleEndDateChange = (e) => {
+    const endDate = new Date(e.target.value);
+
+    if (isNaN(endDate.getTime())) {
+      // Handle invalid date value
+      setEndDate(null);
+      return;
+    }
+
+    setEndDate(endDate);
+  };
+
+  const today = new Date().toISOString().slice(0, 10);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,12 +95,14 @@ const CreateProduct = () => {
     newForm.append("discountedPrice", discountedPrice);
     newForm.append("stock", stock);
     newForm.append("shopId", seller._id);
+    newForm.append("start_date", startDate);
+    newForm.append("finish_date", endDate);
 
     // for (const entry of newForm.entries()) {
     //   console.log(entry);
     // }
 
-    dispatch(createProduct(newForm));
+    dispatch(createEvent(newForm));
 
     // Clear form input values
     setName("");
@@ -80,6 +113,8 @@ const CreateProduct = () => {
     setDiscountedPrice("");
     setStock("");
     setImages([]);
+    setStartDate("");
+    setEndDate("");
   };
 
   return (
@@ -87,7 +122,7 @@ const CreateProduct = () => {
       <div className=" bg-white h-full overflow-hidden shadow rounded-2xl sm:px-10 px-4">
         <div className="sm-mx-auto sm:max-w-lg ">
           <h2 className=" py-8 tracking-widest text-center text-3xl font-extrabold text-gray-900 font-Fira">
-            Create a Product
+            Create an Event
           </h2>
         </div>
         <div className="h-full overflow-x-hidden overflow-y-scroll sm:mx-auto font-Ubuntu sm:max-w-lg ">
@@ -245,6 +280,57 @@ const CreateProduct = () => {
                 </div>
               </div>
 
+              <div className=" col-span-4">
+                <label
+                  htmlFor="username"
+                  className="block font-medium leading-6 text-gray-900"
+                >
+                  Event Start-date
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-lg">
+                    {/* <span className="flex select-none items-center pl-3 text-gray-900 sm:text-sm">
+                      <CalendarDaysIcon className=" w-5 h-5" />
+                    </span> */}
+                    <input
+                      type="date"
+                      name="start-date"
+                      id="start-date"
+                      min={today}
+                      value={
+                        startDate ? startDate.toISOString().slice(0, 10) : ""
+                      }
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      onChange={handleStartDateChange}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className=" col-span-4">
+                <label
+                  htmlFor="username"
+                  className="block font-medium leading-6 text-gray-900"
+                >
+                  Event End-date
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-lg">
+                    {/* <span className="flex select-none items-center pl-3 text-gray-900 sm:text-sm">
+                      <CalendarDaysIcon className=" w-5 h-5" />
+                    </span> */}
+                    <input
+                      type="date"
+                      id="end-date"
+                      name="end-date"
+                      value={endDate ? endDate.toISOString().slice(0, 10) : ""}
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      onChange={handleEndDateChange}
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className="col-span-full">
                 <label
                   htmlFor="cover-photo"
@@ -300,4 +386,4 @@ const CreateProduct = () => {
   );
 };
 
-export default CreateProduct;
+export default CreateEvent;

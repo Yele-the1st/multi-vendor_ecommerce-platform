@@ -2,8 +2,12 @@ import React from "react";
 import useSearch from "../hooks/useSearch";
 import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { backend_url } from "../utils/axiosInstance";
+import { useSelector } from "react-redux";
 
-const SearchBar = ({ data, className }) => {
+const SearchBar = ({ className }) => {
+  const { allProducts } = useSelector((state) => state.product);
+
   const {
     isOpen,
     searchQuery,
@@ -12,7 +16,7 @@ const SearchBar = ({ data, className }) => {
     resultRef,
     handleSearchClick,
     handleSearchChange,
-  } = useSearch(data);
+  } = useSearch(allProducts);
 
   return (
     <div
@@ -42,17 +46,19 @@ const SearchBar = ({ data, className }) => {
         >
           <div className=" gap-6 flex flex-col  h-full  ">
             <div className="w-full flex flex-col flex-wrap items-start font-Ubuntu ">
-              {searchResults && searchResults.length > 0 ? (
-                searchResults.map((result) => {
+              {searchResults && searchResults?.length > 0 ? (
+                searchResults?.map((result) => {
                   return (
                     <Link
-                      to={`/product/${result.id}`}
-                      key={result.id}
+                      to={`/product/${result._id}`}
+                      key={result._id}
                       className=" px-6 w-full hover:bg-[#f6f6f4]"
                     >
                       <div className="w-full flex items-center justify-start py-3 ">
                         <img
-                          src={result.image_Url[0].url}
+                          src={`${backend_url}${
+                            result?.images && result.images[0]
+                          }`}
                           alt=""
                           className="w-10 h-10 mr-[10px]"
                         />

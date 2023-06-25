@@ -8,6 +8,15 @@ export const axiosInstanceFormData = axios.create({
   },
 });
 
+export const axiosInstanceFormDataWithCredentials = axios.create({
+  baseURL: "http://localhost:6600/api/",
+  headers: {
+    "Content-Type": "multipart/form-data", // Set the default content type
+    // Add any other headers you require
+  },
+  withCredentials: true,
+});
+
 export const axiosInstanceJsonData = axios.create({
   baseURL: "http://localhost:6600/api/",
   headers: {

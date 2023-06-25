@@ -5,7 +5,7 @@ export const cardData = [
     imageUrl: "https://cdn-icons-png.flaticon.com/128/1047/1047147.png",
   },
   {
-    title: "Cosmetics and body care",
+    title: "cosmetics and body care",
     description: "Enhance your beauty with premium products.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/5532/5532257.png",
   },
@@ -15,7 +15,7 @@ export const cardData = [
     imageUrl: "https://cdn-icons-png.flaticon.com/128/343/343994.png",
   },
   {
-    title: "Clothes",
+    title: "Cloths",
     description: "Express your style with trendy apparel choices.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/3159/3159614.png",
   },

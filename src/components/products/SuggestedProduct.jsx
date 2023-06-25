@@ -23,7 +23,7 @@ const SuggestedProduct = ({ data }) => {
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-4 lg:gap-6 xl:grid-cols-5 xl:gap-7 mb-12">
               {products &&
                 products.map((i, index) => (
-                  <ProductCard key={index} item={i} />
+                  <ProductCard key={index} seller={data.shopId} item={i} />
                 ))}
             </div>
           </div>

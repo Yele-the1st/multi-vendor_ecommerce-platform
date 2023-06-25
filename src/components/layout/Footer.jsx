@@ -31,21 +31,21 @@ const Footer = () => {
             product updates, product launches & events.
           </p>
 
-          <div class=" flex mt-2 justify-between  p-2 w-[350px] lg:w-full border-b border-b-white uppercase">
-            <div class="w-full h-10 leading-8">
+          <div className=" flex mt-2 justify-between  p-2 w-[350px] lg:w-full border-b border-b-white uppercase">
+            <div className="w-full h-10 leading-8">
               <input
                 name="email"
                 placeholder="EMAIL"
                 type="email"
-                class=" bg-transparent  z-10 h-full relative w-full text-white text-sm  "
+                className=" bg-transparent  z-10 h-full relative w-full text-white text-sm  "
               />
             </div>
             <button
               type="button"
               aria-label="I want in"
-              class=" flex font-medium justify-center items-center"
+              className=" flex font-medium justify-center items-center"
             >
-              <span class="flex gap-1 items-center whitespace-nowrap">
+              <span className="flex gap-1 items-center whitespace-nowrap">
                 Subscribe
                 <ArrowRightIcon className=" w-4 h-4 stroke-2  " />
               </span>

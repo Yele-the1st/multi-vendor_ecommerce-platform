@@ -22,7 +22,7 @@ const NavbarShop = () => {
         </Link>
         <div className=" flex items-center space-x-1">
           <Link
-            to={`/shop/${seller._id}`}
+            to={`/shop/${seller?._id}`}
             className="flex items-center relative py-2.5 px-4 min-h-[36px] min-w-[36px] rounded-full  hover:bg-[#f6f6f4] "
           >
             {seller?.avatar ? (

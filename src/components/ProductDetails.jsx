@@ -7,8 +7,9 @@ import {
   PaperAirplaneIcon,
 } from "@heroicons/react/24/solid";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Accordian from "./accordian/Accordian";
+import { backend_url } from "../utils/axiosInstance";
 
 const ProductDetails = ({ data }) => {
   const [count, setCount] = useState(1);
@@ -49,11 +50,13 @@ const ProductDetails = ({ data }) => {
                     />
                   </button>
                   <div className="flex">
-                    <div className=" ml-[66px] max-w-[794px] relative order-2 flex-grow-[6] flex-shrink-[1] flex-[0%]">
+                    <div className=" ml-[80px] max-w-[794px] relative order-2 flex-grow-[6] flex-shrink-[1] flex-[0%]">
                       <div className="pt-[80%] h-0 relative">
                         <div className=" duration-700 ease-in absolute left-0 overflow-hidden top-0 h-full w-full">
                           <img
-                            src={data.image_Url[select].url}
+                            src={`${backend_url}${
+                              data.images && data.images[select]
+                            }`}
                             alt=""
                             className=" overflow-clip max-h-full relative -translate-y-[50%] top-[50%] block mx-auto max-w-full  rounded-[6px]"
                           />
@@ -62,30 +65,21 @@ const ProductDetails = ({ data }) => {
                     </div>
                     <div className="absolute left-0 bottom-0 top-0 overflow-y-scroll">
                       <div className=" flex flex-col  items-end ">
-                        <div
-                          className={`${
-                            select === 0 ? "border-2 border-black" : "null"
-                          } cursor-pointer h-[70px] w-[70px] mb-1.5 mr-1.5 rounded-[6px] overflow-hidden bg-[#eaeaea] flex-shrink-0`}
-                        >
-                          <img
-                            src={data?.image_Url[0].url}
-                            alt=""
-                            className=" max-w-full w-full overflow-clip"
-                            onClick={() => setSelect(0)}
-                          />
-                        </div>
-                        <div
-                          className={`${
-                            select === 1 ? "border-2 border-black" : "null"
-                          } cursor-pointer h-[70px] w-[70px] mb-1.5 mr-1.5 rounded-[6px] overflow-hidden bg-[#eaeaea] flex-shrink-0`}
-                        >
-                          <img
-                            src={data?.image_Url[1].url}
-                            alt=""
-                            className=" max-w-full w-full overflow-clip"
-                            onClick={() => setSelect(1)}
-                          />
-                        </div>
+                        {data.images.map((image, index) => (
+                          <div
+                            key={index}
+                            className={`${
+                              select === index ? "border-2 border-black" : ""
+                            } cursor-pointer h-[70px] w-[70px] mb-1.5 mr-1.5 rounded-[6px] overflow-hidden bg-[#eaeaea] flex-shrink-0`}
+                            onClick={() => setSelect(index)}
+                          >
+                            <img
+                              src={`${backend_url}${image}`}
+                              alt=""
+                              className="max-w-full w-full overflow-clip"
+                            />
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -102,7 +96,8 @@ const ProductDetails = ({ data }) => {
                 <ArchiveBoxIcon className="w-5 h-5 text-[#A5192E]" />
               </div>
               <h2 className=" font-semibold text-2xl my-2">
-                ${data.price ? data.price : data.discount_price}
+                $
+                {data.originalPrice ? data.originalPrice : data.discountedPrice}
               </h2>
               <p className=" text-[#595959] text-sm mb-2 ">
                 Shipping and taxes calculated at checkout.
@@ -181,18 +176,22 @@ const ProductDetails = ({ data }) => {
                         <div className="flex font-Ubuntu mb-2 font-semibold items-center gap-2.5 ">
                           <img
                             className="w-[46px] h-[46px]  object-cover rounded-full "
-                            src={data.shop.shop_avatar.url}
+                            src={`${backend_url}${
+                              data?.shopId?.avatar && data?.shopId?.avatar
+                            }`}
                             alt=""
                           />
                           <div className="flex flex-col">
-                            <span className="text-sm">{data.shop.name}</span>
+                            <span className="text-sm">
+                              {data?.shopId?.shopname}
+                            </span>
                             <div className="flex items-center gap-1">
                               {[0, 1, 2, 3, 4].map((rating) => (
                                 <StarIcon
                                   key={rating}
                                   className={`
                                ${
-                                 data.shop.ratings > rating
+                                 data?.shopId?.ratings > rating
                                    ? "text-gray-900"
                                    : "text-gray-200"
                                } 
@@ -291,18 +290,20 @@ const ProductDetailsInfo = ({ data }) => {
             <div className="flex font-Ubuntu mb-2 font-semibold items-center gap-2.5 ">
               <img
                 className="w-[46px] h-[46px]  object-cover rounded-full "
-                src={data.shop.shop_avatar.url}
+                src={`${backend_url}${
+                  data?.shopId?.avatar && data?.shopId?.avatar
+                }`}
                 alt=""
               />
               <div className="flex flex-col">
-                <span className="text-sm">{data.shop.name}</span>
+                <span className="text-sm">{data?.shopId?.shopname}</span>
                 <div className="flex items-center gap-1">
                   {[0, 1, 2, 3, 4].map((rating) => (
                     <StarIcon
                       key={rating}
                       className={`
                                ${
-                                 data.shop.ratings > rating
+                                 data?.shopId?.ratings > rating
                                    ? "text-gray-900"
                                    : "text-gray-200"
                                } 

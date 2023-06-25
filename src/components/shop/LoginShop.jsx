@@ -185,7 +185,7 @@ const LoginShop = () => {
                 Don't have an account yet?
               </div>
               <span className="text-sm tracking-wide font-Ubuntu text-indigo-600">
-                <Link to={`/app/create-shop`}>Create a Shop</Link>
+                <Link to={`/auth/shop/create-shop`}>Create a Shop</Link>
               </span>
             </div>
           </form>

@@ -4,20 +4,19 @@ import { StarIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { generateComponents } from "../utils/generateComponent";
 import ProductOverview from "./ProductOverview";
+import { backend_url } from "../utils/axiosInstance";
 
-const ProductCard = ({ item }) => {
+const ProductCard = ({ item, seller, isShop }) => {
   const [open, setOpen] = useState(false);
   const [click, setClick] = useState(false);
-  const d = item.name;
-  const product_name = d.replace(/\s+/g, "-");
 
   return (
     <div className=" group w-full hover:shadow-md rounded-t-xl  bg-white flex flex-col">
       <div className=" shadow rounded-t-xl border-0.5 relative h-0 overflow-hidden pb-[63.25%]">
-        <Link to={`/product/${product_name}`}>
+        <Link to={`/product/${item?._id}`}>
           <img
             className="absolute inset-0 w-full h-full  overflow-clip object-contain"
-            src={item.image_Url[0].url}
+            src={`${backend_url}${item?.images && item.images[0]}`}
             alt=""
           />
         </Link>
@@ -33,7 +32,7 @@ const ProductCard = ({ item }) => {
           />
         </button>
         <button
-          className={` hidden lg:block group-hover:opacity-100  sm:opacity-0  absolute left-3 font-Ubuntu right-3 bottom-3 border p-1 text-center rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
+          className={` hidden md:block group-hover:opacity-100  sm:opacity-0  absolute left-3 font-Ubuntu right-3 bottom-3 border p-1 text-center rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
           onClick={() => setOpen(!open)}
         >
           quick view
@@ -41,14 +40,14 @@ const ProductCard = ({ item }) => {
       </div>
 
       <div className="p-5 flex flex-col flex-grow">
-        <Link to={`/`}>
+        <Link to={`/shop/${seller?._id}`}>
           <div className="flex font-Ubuntu mb-2 font-semibold items-center gap-2.5 ">
             <img
               className="w-[26px] h-[26px]  object-cover rounded-full "
-              src={item.shop.shop_avatar.url}
+              src={`${backend_url}${seller?.avatar && seller?.avatar}`}
               alt=""
             />
-            <span className="text-sm">{item.shop.name}</span>
+            <span className="text-sm">{seller?.shopname}</span>
           </div>
         </Link>
         <p className="line-clamp-2 font-light text-sm font-Source">
@@ -63,7 +62,7 @@ const ProductCard = ({ item }) => {
               <StarIcon
                 key={rating}
                 className={`
-                  ${item.rating > rating ? "text-gray-900" : "text-gray-200"} 
+                  ${item?.rating > rating ? "text-gray-900" : "text-gray-200"} 
                   "h-4 w-4 flex-shrink-0"
                 `}
                 aria-hidden="true"
@@ -74,16 +73,19 @@ const ProductCard = ({ item }) => {
           {/* <span className="text-base font-Source">{item.rating}</span> */}
           <div className="flex items-center gap-3">
             <h4 className={`text-lg font-semibold font-Source`}>
-              ${item.discount_price ? item.discount_price : item.price}
+              $
+              {item?.discountedPrice
+                ? item?.discountedPrice
+                : item?.originalPrice}
             </h4>
-            {item.discount_price && item.price && (
+            {item?.discountedPrice && item?.originalPrice && (
               <h3 className=" line-through text-gray-600 font-Source">
-                ${item.price}
+                ${item?.originalPrice}
               </h3>
             )}
           </div>
           <h2 className=" whitespace-nowrap font-Ubuntu">
-            {item.total_sell} Sold{" "}
+            {item?.sold_out} Sold
           </h2>
         </div>
 
@@ -97,7 +99,12 @@ const ProductCard = ({ item }) => {
         </div>
       </div>
       {open ? (
-        <ProductOverview open={open} setOpen={setOpen} data={item} />
+        <ProductOverview
+          open={open}
+          seller={seller}
+          setOpen={setOpen}
+          item={item}
+        />
       ) : null}
     </div>
   );

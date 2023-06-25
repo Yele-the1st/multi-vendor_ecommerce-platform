@@ -3,16 +3,18 @@ import ProductCard from "./ProductCard";
 import styles from "../styles/styles";
 import { productData } from "../static/data";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import { useDispatch, useSelector } from "react-redux";
+import { loadLatestProduct } from "../redux/actions/productAction";
 
 const Featured = () => {
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const d =
-      productData && productData.sort((a, b) => b.total_sell - a.total_sell);
-    const firstFive = d.slice(0, 4);
-    setData(firstFive);
-  }, []);
+    dispatch(loadLatestProduct());
+  }, [dispatch]);
+
+  const { latestProducts } = useSelector((state) => state.product);
+
   return (
     <div className={` ${styles.section} mt-10 py-10 px-4 lg:px-12`}>
       <p className="mt-5 text-3xl text-center font-bold font-Ubuntu tracking-tight text-gray-900 sm:text-4xl">
@@ -22,9 +24,14 @@ const Featured = () => {
         CHECK OUT OUR FEATURED PRODUCTS + LATEST DROPS
       </p>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 mt-4 ">
-        {data.map((product) => (
-          <ProductCard key={product.id} item={product} />
-        ))}
+        {latestProducts && latestProducts.length !== 0 && (
+          <>
+            {latestProducts &&
+              latestProducts.map((i, index) => (
+                <ProductCard item={i} seller={i.shopId} key={index} />
+              ))}
+          </>
+        )}
       </div>
       <div className=" my-12 flex justify-center">
         <button

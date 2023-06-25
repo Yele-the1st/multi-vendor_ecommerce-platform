@@ -80,6 +80,10 @@ const Signup = () => {
     newForm.append("email", email);
     newForm.append("password", password);
 
+    for (const entry of newForm.entries()) {
+      console.log(entry);
+    }
+
     try {
       const response = await axiosInstanceFormData.post(
         "/users/register-user",

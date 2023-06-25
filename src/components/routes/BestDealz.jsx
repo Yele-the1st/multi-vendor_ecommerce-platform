@@ -4,6 +4,8 @@ import styles from "../../styles/styles";
 import { productData } from "../../static/data";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+import { loadBestSellingProduct } from "../../redux/actions/productAction";
+import { useDispatch, useSelector } from "react-redux";
 
 const BestDealz = () => {
   const [data, setData] = useState([]);
@@ -12,12 +14,21 @@ const BestDealz = () => {
     navigate(`/products?bestselling=true`);
   };
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const d =
-      productData && productData.sort((a, b) => b.total_sell - a.total_sell);
-    const firstFive = d.slice(0, 4);
-    setData(firstFive);
-  }, []);
+    dispatch(loadBestSellingProduct());
+  }, [dispatch]);
+
+  const { BestSelling } = useSelector((state) => state.product);
+  console.log(`bestselling ${BestSelling}`);
+
+  // useEffect(() => {
+  //   const d =
+  //     productData && productData.sort((a, b) => b.total_sell - a.total_sell);
+  //   const firstFive = d.slice(0, 4);
+  //   setData(firstFive);
+  // }, []);
   return (
     <div className={` ${styles.section} mt-10 py-10 px-4 lg:px-12`}>
       <p className="mt-5 text-3xl text-center font-bold font-Ubuntu tracking-tight text-gray-900 sm:text-4xl">
@@ -27,9 +38,14 @@ const BestDealz = () => {
         CHECK OUT OUR BESTSELLERS
       </p>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 mt-4 ">
-        {data.map((product) => (
-          <ProductCard key={product.id} item={product} />
-        ))}
+        {BestSelling &&
+          BestSelling.map((product) => (
+            <ProductCard
+              key={product?._id}
+              seller={product?.shopId}
+              item={product}
+            />
+          ))}
       </div>
       <div className=" my-12 flex justify-center">
         <button

@@ -4,7 +4,6 @@ import ActivationPage from "./pages/ActivationPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import FaqPage from "./pages/FaqPage.jsx";
 import EventsPage from "./pages/EventsPage.jsx";
-import ShopPage from "./pages/ShopPage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
 import ProductsPage from "./pages/ProductsPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
@@ -14,6 +13,10 @@ import ShopLoginPage from "./pages/ShopLoginPage.jsx";
 import ShopHomePage from "./pages/ShopHomePage.jsx";
 import ShopDashboardPage from "./pages/ShopDashboardPage.jsx";
 import ShopCreateProductPage from "./pages/ShopCreateProductPage.jsx";
+import ShopProductsPage from "./pages/ShopProductsPage.jsx";
+import ShopCreateEventPage from "./pages/ShopCreateEventPage.jsx";
+import ShopEventsPage from "./pages/ShopEventsPage.jsx";
+import ShopCouponsPage from "./pages/ShopCouponsPage.jsx";
 
 export {
   LoginPage,
@@ -22,7 +25,6 @@ export {
   HomePage,
   FaqPage,
   EventsPage,
-  ShopPage,
   ProductPage,
   ProductsPage,
   ProfilePage,
@@ -32,4 +34,8 @@ export {
   ShopHomePage,
   ShopDashboardPage,
   ShopCreateProductPage,
+  ShopProductsPage,
+  ShopCreateEventPage,
+  ShopEventsPage,
+  ShopCouponsPage,
 };

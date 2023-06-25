@@ -52,13 +52,13 @@ const Navbar = () => {
       <div
         className={` w-full flex items-center justify-between lg:space-x-5 pt-4 pb-4 lg:pb-0  `}
       >
-        <div className="flex items-center gap-2">
+        <Link to={`/`} className="flex items-center gap-2">
           <h1 className=" text-2xl lg:text-3xl font-fira font-extrabold text-[#E0005B] ">
             Vendorr
           </h1>
-        </div>
+        </Link>
         {/* Search box Header */}
-        <SearchBar className={"hidden lg:flex"} data={productData} />
+        <SearchBar className={"hidden lg:flex"} />
 
         <div className=" flex items-center space-x-1  ">
           {isAuthenticated ? (
@@ -213,7 +213,7 @@ const Navbar = () => {
           </>
         )}
         <NavLinks className={`hidden lg:flex space-x-10 pr-4`} />
-        <SearchBar className={"lg:hidden ml-8 mb-4"} data={productData} />
+        <SearchBar className={"lg:hidden ml-8 mb-4"} />
         <Link
           to={`/app/create-shop`}
           className="hidden mb-1 lg:block font-medium whitespace-nowrap py-3 px-8  rounded-xl bg-[#f6f6f4] text-black hover:bg-black hover:text-white transition-all duration-300 ease-linear delay-0"

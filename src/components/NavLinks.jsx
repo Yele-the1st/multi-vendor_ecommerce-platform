@@ -6,7 +6,7 @@ const NavLinks = ({ className }) => {
   return (
     <div className={` ${className} `}>
       <NavLink
-        exact
+        exact="true"
         to="/"
         className={({ isActive }) =>
           isActive ? `${styles.navActive}` : `${styles.navNormal}`

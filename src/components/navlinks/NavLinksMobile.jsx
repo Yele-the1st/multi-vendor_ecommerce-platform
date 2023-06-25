@@ -6,7 +6,7 @@ const NavLinks = ({ setVisible, className }) => {
   return (
     <div className={` ${className} `}>
       <NavLink
-        exact
+        exact="true"
         to="/"
         onClick={() => setVisible(false)}
         className={({ isActive }) =>

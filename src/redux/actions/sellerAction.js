@@ -13,7 +13,7 @@ export const loginSeller = createAsyncThunk(
         { email, password } // Shorthand object notation
       );
 
-      return response.data.user; // Assuming the response contains the user data or token
+      return response.data.seller; // Assuming the response contains the user data or token
     } catch (error) {
       console.log(error);
       throw error.response.data.message; // Rethrow the error to be handled by the calling code
@@ -21,10 +21,11 @@ export const loginSeller = createAsyncThunk(
   }
 );
 
-export const loadSeller = createAsyncThunk("shop/loadSeller", async () => {
+export const loadSeller = createAsyncThunk("shop/loadSeller", async (id) => {
   try {
-    const response = await axiosInstanceGet.get("/shops/get-shop");
-    console.log(response.data.seller);
+    const response = await axiosInstanceGet.get(`/shops/get-shop/${id}`);
+    console.log(`newwsettt4455${response.data.seller}`);
+    console.log(response);
     return response.data.seller;
   } catch (error) {
     console.log(error.response.data.message);

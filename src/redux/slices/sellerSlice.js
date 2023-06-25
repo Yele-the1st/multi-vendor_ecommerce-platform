@@ -10,7 +10,10 @@ const sellerSlice = createSlice({
     seller: localStorage.getItem("seller")
       ? JSON.parse(localStorage.getItem("seller"))
       : null,
-    error: null,
+    error: "null",
+    fetchedLoading: false,
+    fetchedSeller: "",
+    fetchedError: "",
   },
   reducers: {
     clearErrors: (state) => {
@@ -30,6 +33,9 @@ const sellerSlice = createSlice({
         state.sellerIsAuthenticated = true;
         state.seller = action.payload;
         state.error = null;
+
+        localStorage.setItem("sellerIsAuthenticated", true);
+        localStorage.setItem("seller", JSON.stringify(action.payload));
       })
       .addCase(loginSeller.rejected, (state, action) => {
         // Handle login failure
@@ -39,29 +45,21 @@ const sellerSlice = createSlice({
         state.sellerIsAuthenticated = false;
         state.seller = [];
       })
+
       .addCase(loadSeller.pending, (state) => {
-        state.loading = true;
+        state.fetchedLoading = true;
       })
       .addCase(loadSeller.fulfilled, (state, action) => {
-        state.loading = false;
-        state.sellerIsAuthenticated = true;
-        state.seller = action.payload;
-        state.error = null;
-
-        // Save authentication data in local storage
-        localStorage.setItem("sellerIsAuthenticated", true);
-        localStorage.setItem("seller", JSON.stringify(action.payload));
+        state.fetchedLoading = false;
+        state.fetchedSeller = action.payload;
+        state.fetchedError = "";
       })
       .addCase(loadSeller.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-        state.sellerIsAuthenticated = false;
-        state.seller = [];
-
-        // Revoke authentication data in local storage
-        localStorage.setItem("sellerIsAuthenticated", false);
-        localStorage.setItem("seller", JSON.stringify([]));
+        state.fetchedLoading = false;
+        state.fetchedError = action.error.message;
+        state.fetchedSeller = "";
       })
+
       .addCase(logoutSeller.pending, (state) => {
         state.loading = true;
       })

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { backend_url } from "../../utils/axiosInstance";
 import {
   IdentificationIcon,
@@ -20,20 +20,34 @@ import {
   SwatchIcon,
   TagIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { productData } from "../../static/data";
 import ProductCard from "../ProductCard";
+import { logoutSeller, loadSeller } from "../../redux/actions/sellerAction";
+import { toast } from "react-toastify";
 
 const ShopInfo = ({ isOwner }) => {
   const [dropdown, setDropdown] = useState(false);
-  const { seller } = useSelector((state) => state.seller);
+  const { fetchedSeller, fetchedLoading, fetchedError } = useSelector(
+    (state) => state.seller
+  );
+  const { id } = useParams();
   const [active, setActive] = useState(1);
 
-  const logoutHandler = () => {};
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    dispatch(logoutSeller());
+    toast.success("logged out Successfully");
+  };
+
+  useEffect(() => {
+    dispatch(loadSeller(id));
+  }, [dispatch]);
 
   return (
     <div className=" transition-all ease-in-out duration-300 delay-0 relative  w-full overflow-y-hidden">
-      <div className=" absolute top-2 right-2">
+      <div className=" z-20 absolute top-1 right-1">
         <div
           className="relative cursor-pointer p-2 rounded-2xl hover:shadow-lg hover:bg-[#f4f4f4]"
           onClick={() => setDropdown(!dropdown)}
@@ -106,17 +120,17 @@ const ShopInfo = ({ isOwner }) => {
             <div className="w-full flex items-center justify-center">
               <div className=" w-36 h-36 rounded-full">
                 <img
-                  src={`${backend_url}${seller?.avatar}`}
+                  src={`${backend_url}${fetchedSeller?.avatar}`}
                   alt=""
                   className="w-full h-full object-center object-cover rounded-full"
                 />
               </div>
             </div>
             <h3 className="text-center font-semibold py-4 text-4xl">
-              {seller.shopname}
+              {fetchedSeller?.shopname}
             </h3>
             <p className=" text-sm text-[#000000a6] p-2.5 flex text-center items-center">
-              {seller.description}
+              {fetchedSeller?.description}
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
               quae cumque delectus, ipsam accusantium recusandae distinctio a
               ullam eum mollitia harum quis eligendi et placeat atque. Error
@@ -149,7 +163,7 @@ const ShopInfo = ({ isOwner }) => {
                 </div>
                 <div>
                   <h5 className=" font-semibold">Address</h5>
-                  <p className="text-[#000000a6]">{seller.address}</p>
+                  <p className="text-[#000000a6]">{fetchedSeller?.address}</p>
                 </div>
               </div>
 
@@ -159,7 +173,9 @@ const ShopInfo = ({ isOwner }) => {
                 </div>
                 <div>
                   <h5 className=" font-semibold">Phone Number</h5>
-                  <p className="text-[#000000a6]">+234({seller.phoneNumber})</p>
+                  <p className="text-[#000000a6]">
+                    +234({fetchedSeller?.phoneNumber})
+                  </p>
                 </div>
               </div>
 
@@ -190,7 +206,7 @@ const ShopInfo = ({ isOwner }) => {
                 <div>
                   <h5 className=" font-semibold">Joined on</h5>
                   <p className="text-[#000000a6]">
-                    {seller.createdAt.slice(0, 10)}
+                    {fetchedSeller?.createdAt?.slice(0, 10)}
                   </p>
                 </div>
               </div>
@@ -202,14 +218,19 @@ const ShopInfo = ({ isOwner }) => {
         <div className={` h-full mt-5 w-full `}>
           <div className=" px-4 lg:px-12 pb-6">
             <h1 className=" text-3xl font-bold">
-              {seller.shopname}'s Products
+              {fetchedSeller?.shopname}'s Products
             </h1>
           </div>
           <div className=" px-4 lg:px-12 overflow-y-scroll w-full h-full">
             <div className=" mt-5 grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-6 lg:grid-cols-4 lg:gap-6 xl:grid-cols-5 xl:gap-7 mb-24">
-              {productData &&
-                productData.map((i, index) => (
-                  <ProductCard item={i} key={index} isShop={true} />
+              {fetchedSeller?.products &&
+                fetchedSeller?.products.map((i) => (
+                  <ProductCard
+                    item={i}
+                    key={i._id}
+                    seller={fetchedSeller}
+                    isShop={true}
+                  />
                 ))}
             </div>
           </div>

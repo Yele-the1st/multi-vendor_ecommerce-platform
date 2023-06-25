@@ -21,7 +21,9 @@ const CategoryItems = ({ setVisible, link, title, description, imageUrl }) => {
             <div className=" font-Fira text-base font-medium text-black">
               {title}
             </div>
-            <div class=" text-sm text-[#6c6d78] font-Ubuntu">{description}</div>
+            <div className=" text-sm text-[#6c6d78] font-Ubuntu">
+              {description}
+            </div>
           </div>
         </div>
       </Link>

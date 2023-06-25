@@ -29,7 +29,7 @@ const Accordian = ({
       </button>
       {activeTab && (
         <div className="mt-4 max-h-max">
-          <p className={`${classNameContent}`}>{content}</p>
+          <div className={`${classNameContent}`}>{content}</div>
         </div>
       )}
     </div>
