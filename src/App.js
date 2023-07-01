@@ -2,11 +2,13 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
 import LandingLayout from "./layouts/LandingLayout";
+import ErrorPage from "./layouts/ErrorPage";
 import ShopLayout from "./layouts/ShopLayout";
 import AppLayout from "./layouts/AppLayout";
 import Orders from "./pages/Orders";
 import Message from "./pages/Message";
 import Messages from "./pages/Messages";
+import { loader as shopsLoader } from "./pages/ShopsPage";
 import {
   LoginPage,
   SignupPage,
@@ -27,6 +29,8 @@ import {
   ShopCreateEventPage,
   ShopEventsPage,
   ShopCouponsPage,
+  ProductsCategoryPage,
+  ShopsPage,
 } from "./Routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -53,9 +57,10 @@ const App = () => {
     {
       path: "/",
       element: <LandingLayout />,
+      errorElement: <ErrorPage />,
       children: [
         {
-          path: "/",
+          index: true,
           element: <HomePage />,
         },
         {
@@ -65,6 +70,10 @@ const App = () => {
         {
           path: "/products",
           element: <ProductsPage />,
+        },
+        {
+          path: "/products/c/:name",
+          element: <ProductsCategoryPage />,
         },
         {
           path: "/product/:id",
@@ -78,6 +87,11 @@ const App = () => {
         {
           path: "/about",
           element: <FaqPage />,
+        },
+        {
+          path: "/shops",
+          element: <ShopsPage />,
+          loader: shopsLoader,
         },
       ],
     },

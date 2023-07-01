@@ -9,11 +9,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { categoriesData } from "../../static/data";
 import { TagIcon } from "@heroicons/react/24/solid";
 import { createProduct } from "../../redux/actions/productAction";
 import { toast } from "react-toastify";
 import { resetSuccess } from "../../redux/slices/productSlice";
+import { cardData } from "../../data/CategoryData";
 
 const CreateProduct = () => {
   const { seller } = useSelector((state) => state.seller);
@@ -147,9 +147,9 @@ const CreateProduct = () => {
                     className="block w-full rounded-md border-0 p-[9px] text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-lg sm:leading-6"
                   >
                     <option value={`Choose a category`}></option>
-                    {categoriesData &&
-                      categoriesData.map((i, index) => (
-                        <option value={i.title} key={index}>
+                    {cardData &&
+                      cardData.map((i, index) => (
+                        <option value={i.value} key={index}>
                           {i.title}
                         </option>
                       ))}

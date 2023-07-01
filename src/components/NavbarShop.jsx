@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styles from "../styles/styles";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { backend_url } from "../utils/axiosInstance";
 import { AiFillCaretDown } from "react-icons/ai";
+import QueryBar from "./QueryBar";
+import { useItems } from "../hooks/useItems";
 
 const NavbarShop = () => {
   const { seller } = useSelector((state) => state.seller);
@@ -20,6 +22,7 @@ const NavbarShop = () => {
             Vendorr
           </h1>
         </Link>
+
         <div className=" flex items-center space-x-1">
           <Link
             to={`/shop/${seller?._id}`}

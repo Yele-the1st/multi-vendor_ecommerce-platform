@@ -3,51 +3,61 @@ export const cardData = [
     title: "Computers and Laptops",
     description: "Cutting-edge tech for seamless performance.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/1047/1047147.png",
+    value: "computers-and-laptops",
   },
   {
     title: "cosmetics and body care",
     description: "Enhance your beauty with premium products.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/5532/5532257.png",
+    value: "cosmetics-and-body-care",
   },
   {
     title: "Accesories",
     description: "Stylish add-ons for a fashionable statement.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/343/343994.png",
+    value: "accesories",
   },
   {
-    title: "Cloths",
+    title: "Clothes",
     description: "Express your style with trendy apparel choices.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/3159/3159614.png",
+    value: "clothes",
   },
   {
     title: "Shoes",
     description: "Step out in style with trendy footwear options.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/2741/2741280.png",
+    value: "shoes",
   },
   {
     title: "Gifts",
     description: "Delight your loved ones with thoughtful presents.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/1139/1139931.png",
+    value: "gifts",
   },
   {
     title: "Pet Care",
     description: "Keep your furry friends happy and healthy.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/3737/3737711.png",
+    value: "pet-care",
   },
   {
     title: "Mobile and Tablets",
     description: "Stay connected on-the-go with the latest devices.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/4403/4403548.png",
+    value: "mobile-and-tablets",
   },
   {
     title: "Gaming",
     description: "Immerse yourself in thrilling gaming adventures.",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/2972/2972351.png",
+    value: "gaming",
   },
   {
     title: "Others",
     description: "Discover a wide range of unique and miscellaneous items",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/85/85508.png",
+    value: "others",
   },
 
   // Add more objects as needed

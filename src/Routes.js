@@ -17,6 +17,8 @@ import ShopProductsPage from "./pages/ShopProductsPage.jsx";
 import ShopCreateEventPage from "./pages/ShopCreateEventPage.jsx";
 import ShopEventsPage from "./pages/ShopEventsPage.jsx";
 import ShopCouponsPage from "./pages/ShopCouponsPage.jsx";
+import ProductsCategoryPage from "./pages/ProductsCategoryPage.jsx";
+import ShopsPage from "./pages/ShopsPage.jsx";
 
 export {
   LoginPage,
@@ -38,4 +40,6 @@ export {
   ShopCreateEventPage,
   ShopEventsPage,
   ShopCouponsPage,
+  ProductsCategoryPage,
+  ShopsPage,
 };

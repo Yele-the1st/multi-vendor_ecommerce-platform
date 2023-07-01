@@ -1,72 +1,69 @@
 import styles from "../styles/styles";
-import { useSearchParams } from "react-router-dom";
-import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import ProductCard from "../components/ProductCard";
 import { axiosInstanceGet } from "../utils/axiosInstance";
 import Loader from "../components/routes/Loader";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/outline";
+
+import { ChevronUpDownIcon, CubeIcon } from "@heroicons/react/24/solid";
 import Pagination from "../components/Pagination";
+import { useItems, useProductQuery } from "../hooks/useItems";
+import Select from "../components/Select";
+import PriceRange from "../components/utility/PriceRange";
 
 const ProductsPage = () => {
-  let [searchParams, setSearchParams] = useSearchParams();
   const [active, setActive] = useState(1);
+  const [search, setSearch] = useSearchParams();
 
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [category, setCategory] = useState("");
-  const [priceRange, setPriceRange] = useState("");
-  const [sort, setSort] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [currentPageRange, setCurrentPageRange] = useState(1);
 
-  const fetchProducts = useCallback(async () => {
-    setIsLoading(true);
-
-    try {
-      const categoryParams = searchParams.get("category");
-      setSearchParams({
-        page: page,
-        pageSize: pageSize,
-        category: categoryParams,
-        priceRange: priceRange,
-        sort: sort,
-      });
-
-      const response = await axiosInstanceGet.get(
-        `/products/products?${searchParams}`
-      );
-
-      setProducts(response.data.products);
-      setTotalPages(response.data.totalPages);
-      setTotalProducts(response.data.totalProducts);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
-  }, [searchParams]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
-  useEffect(() => {
-    setSearchParams({
-      page: page,
-      pageSize: pageSize,
-      category: category,
-      priceRange: priceRange,
-      sort: sort,
-    });
-  }, [page, pageSize, category, priceRange, sort]);
+  const availableSortOptions = [
+    { value: "sales", label: "Best Selling" },
+    { value: "createdAt", label: "Most Recent" },
+    { value: "priceAsc", label: "Lowest Price" },
+    { value: "priceDesc", label: "Highest Price" },
+    { value: "", label: "Relevancy" },
+  ];
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
     setActive(newPage);
   };
+
+  useEffect(() => {
+    search.set("page", page);
+    setSearch(search, {
+      replace: true,
+    });
+  }, [page]);
+
+  const sort = search.get("sort");
+  const priceRange = search.get("priceRange");
+
+  useEffect(() => {
+    setPage(1);
+  }, [sort, priceRange]);
+
+  const getItems = useProductQuery();
+
+  // Assuming setTotalPages is a state update function
+  useEffect(() => {
+    if (getItems.data) {
+      setTotalPages(getItems.data.totalPages);
+      setProducts(getItems.data?.products);
+    }
+  }, [getItems.data]);
 
   return (
     <>
@@ -74,17 +71,26 @@ const ProductsPage = () => {
         <Loader />
       ) : (
         <div className={` ${styles.section}  mt-6 px-4 lg:px-12`}>
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-6 lg:grid-cols-4 lg:gap-6 xl:grid-cols-5 xl:gap-7 mb-12">
-            {products &&
-              products.map((item, index) => (
-                <ProductCard item={item} seller={item.shopId} key={index} />
-              ))}
-          </div>
-          {products && products.length === 0 ? (
-            <h1 className="text-center w-full font-Ubuntu pb-[100px] text-2xl font-bold">
-              No Products Found
+          <div className="flex items-center mb-6">
+            <CubeIcon className="w-5 h-5 mr-2 " />
+
+            <h1 className=" font-Ubuntu text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+              All Products
             </h1>
-          ) : null}
+          </div>
+
+          <div className=" font-Ubuntu flex items-center justify-between mb-10">
+            <PriceRange />
+            {/* ***************************************** */}
+            <Select availableSortOptions={availableSortOptions} />
+          </div>
+          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-6 lg:grid-cols-4 lg:gap-6 xl:grid-cols-5 xl:gap-7 mb-12">
+            {!getItems.isLoading && products && products.length > 0
+              ? products.map((item, index) => (
+                  <ProductCard item={item} seller={item.shopId} key={index} />
+                ))
+              : null}
+          </div>
           {/* Pagination */}
           <div className=" sm:hidden  font-Ubuntu text-center pb-3 justify-between flex items-center flex-wrap -mb-1.5  ">
             <button
@@ -107,24 +113,11 @@ const ProductsPage = () => {
           </div>
 
           {/* Pagination */}
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-          {/* Filter options */}
-          <div>
-            <input
-              type="text"
-              value={category}
-              placeholder="Category"
-              onChange={(e) => setCategory(e.target.value)}
-            />
-            <input
-              type="text"
-              value={priceRange}
-              placeholder="Price Range (e.g. 0-100)"
-              onChange={(e) => setPriceRange(e.target.value)}
+          <div className="hidden sm:block">
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
             />
           </div>
         </div>

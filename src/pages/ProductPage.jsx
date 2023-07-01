@@ -23,7 +23,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     dispatch(loadProduct(id));
-  }, [dispatch]);
+  }, [dispatch, pathname]);
 
   if (loading) {
     return <Loader />;

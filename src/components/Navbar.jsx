@@ -175,7 +175,7 @@ const Navbar = () => {
               <div className="lg:gap-1 grid grid-cols-1 lg:grid-cols-3 items-start max-h-[calc(100vh-250px)] lg:max-h-max  ">
                 {cardData.map((card, index) => (
                   <CategoryItems
-                    link={`/products?category=${card.title}`}
+                    link={`/products/c/${card.value}`}
                     key={index}
                     title={card.title}
                     description={card.description}
@@ -198,7 +198,7 @@ const Navbar = () => {
                   <div className="flex flex-col items-start max-h-[calc(100vh-550px)]">
                     {cardData.map((card, index) => (
                       <CategoryItems
-                        link={`/products?category=${card.title}`}
+                        link={`/products/c/${card.value}`}
                         key={index}
                         title={card.title}
                         description={card.description}

@@ -58,6 +58,11 @@ const Login = () => {
 
   return (
     <div className=" relative min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 sm:px-6 lg:px-8 z-10">
+      <Link to={`/`} className="flex items-center mb-6">
+        <h1 className=" animate-bounce text-3xl lg:text-3xl font-fira font-extrabold text-[#E0005B] ">
+          Vendorr
+        </h1>
+      </Link>
       <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10  z-50">
         <div className="sm-mx-auto sm:w-full sm:max-w-md">
           {/* <Link to={`/`}>
