@@ -1,43 +1,45 @@
 import React, { useEffect, useState, useMemo } from "react";
 
-const CountDown = () => {
-  const calculateTimeLeft = (targetDate) => {
-    const difference = targetDate - +new Date();
+const CountDown = ({ startDate, finishDate }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    if (
+      typeof timeLeft.days === "undefined" &&
+      typeof timeLeft.hours === "undefined" &&
+      typeof timeLeft.minutes === "undefined" &&
+      typeof timeLeft.seconds === "undefined"
+    ) {
+      // axios.delete(`${server}/event/delete-shop-event/${data._id}`);
+    }
+    return () => clearTimeout(timer);
+  });
+
+  const calculateTimeLeft = () => {
+    const difference = +new Date(finishDate) - +new Date();
     let timeLeft = {};
 
     if (difference > 0) {
       timeLeft = {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / (1000 * 60)) % 60),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
         seconds: Math.floor((difference / 1000) % 60),
       };
     }
     return timeLeft;
   };
 
-  const targetDate = useMemo(() => new Date("2023-07-17"), []);
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [currentTime]);
-
-  useEffect(() => {
-    setTimeLeft(calculateTimeLeft(targetDate));
-  }, [currentTime, targetDate]);
-
-  const timerComponents = Object.keys(timeLeft).map((interval, index) => {
+  const timerComponents = Object.keys(timeLeft).map((interval) => {
     if (!timeLeft[interval]) {
       return null;
     }
-
     return (
-      <span key={index} className=" text-xl text-[#475ad2]">
+      <span key={interval} className="text-[25px] text-[#475ad2]">
         {timeLeft[interval]} {interval}{" "}
       </span>
     );

@@ -3,9 +3,11 @@ import NavbarShop from "../components/NavbarShop";
 
 const ShopLayout = () => {
   return (
-    <div className="app">
+    <div className="">
       <NavbarShop />
-      <Outlet />
+      <div className="">
+        <Outlet />
+      </div>
     </div>
   );
 };

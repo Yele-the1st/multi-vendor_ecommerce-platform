@@ -8,6 +8,7 @@ import {
   StarIcon,
   ClockIcon,
   DocumentTextIcon,
+  PaperAirplaneIcon,
 } from "@heroicons/react/24/solid";
 import {
   ArrowRightOnRectangleIcon,
@@ -85,29 +86,32 @@ const ShopInfo = ({ isOwner }) => {
                   <ChatBubbleOvalLeftEllipsisIcon className="h-6 w-6 text-black" />
                   <p className=" ">Shop Reviews</p>
                 </span>
-                <hr className=" h-0 my-2" />
-
-                <Link
-                  to={`/shop/dashboard`}
-                  className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
-                >
-                  <Square3Stack3DIcon className="h-6 w-6 text-black" />
-                  <p className=" ">Dashboard</p>
-                </Link>
-                <Link
-                  to={`/auth/shop/create-shop`}
-                  className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
-                >
-                  <PencilIcon className="h-6 w-6 text-black" />
-                  <p className=" ">Edit Shop</p>
-                </Link>
-                <span
-                  className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
-                  //   onClick={() => logoutHandler()}
-                >
-                  <ArrowRightOnRectangleIcon className="h-6 w-6 text-black" />
-                  <p className=" ">Log Out</p>
-                </span>
+                {isOwner && (
+                  <>
+                    <hr className=" h-0 my-2" />
+                    <Link
+                      to={`/shop/dashboard`}
+                      className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
+                    >
+                      <Square3Stack3DIcon className="h-6 w-6 text-black" />
+                      <p className=" ">Dashboard</p>
+                    </Link>
+                    <Link
+                      to={`/auth/shop/create-shop`}
+                      className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
+                    >
+                      <PencilIcon className="h-6 w-6 text-black" />
+                      <p className=" ">Edit Shop</p>
+                    </Link>
+                    <span
+                      className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
+                      //   onClick={() => logoutHandler()}
+                    >
+                      <ArrowRightOnRectangleIcon className="h-6 w-6 text-black" />
+                      <p className=" ">Log Out</p>
+                    </span>
+                  </>
+                )}
               </div>
             </nav>
           )}
@@ -136,7 +140,7 @@ const ShopInfo = ({ isOwner }) => {
               ullam eum mollitia harum quis eligendi et placeat atque. Error
               mollitia facere maiores.
             </p>
-            {isOwner && (
+            {isOwner ? (
               <div className="py-3 px-4 ">
                 <button className=" w-full group hover:scale-y-105 hover:shadow-xl border-2 border-black mb-3 font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out">
                   <p className="group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out">
@@ -144,12 +148,21 @@ const ShopInfo = ({ isOwner }) => {
                   </p>
                 </button>
                 <button
-                  className=" w-full group bg-black hover:scale-y-105 hover:shadow-xl  text-white mb-3   font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out"
+                  className=" w-full group bg-black hover:scale-y-105 hover:shadow-xl border-2 border-black  text-white mb-3   font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out"
                   onClick={() => logoutHandler()}
                 >
                   <p className="group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out">
                     Log Out
                   </p>
+                </button>
+              </div>
+            ) : (
+              <div className="py-3 px-4 ">
+                <button className=" group hover:scale-y-105 hover:shadow-xl my-3 w-full border-2 border-black mb-2 font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out">
+                  <div className=" group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out flex gap-2 justify-center items-center">
+                    <p>Message Seller</p>
+                    <PaperAirplaneIcon className="w-5 h-5" />
+                  </div>
                 </button>
               </div>
             )}

@@ -14,6 +14,7 @@ import { TagIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
 import { resetSuccess } from "../../redux/slices/eventSlice";
 import { createEvent } from "../../redux/actions/eventAction";
+import { cardData } from "../../data/CategoryData";
 
 const CreateEvent = () => {
   const { seller } = useSelector((state) => state.seller);
@@ -182,9 +183,9 @@ const CreateEvent = () => {
                     className="block w-full rounded-md border-0 p-[9px] text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-lg sm:leading-6"
                   >
                     <option value={`Choose a category`}></option>
-                    {categoriesData &&
-                      categoriesData.map((i, index) => (
-                        <option value={i.title} key={index}>
+                    {cardData &&
+                      cardData.map((i, index) => (
+                        <option value={i.value} key={index}>
                           {i.title}
                         </option>
                       ))}

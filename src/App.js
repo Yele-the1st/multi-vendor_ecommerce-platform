@@ -9,6 +9,7 @@ import Orders from "./pages/Orders";
 import Message from "./pages/Message";
 import Messages from "./pages/Messages";
 import { loader as shopsLoader } from "./pages/ShopsPage";
+import { loader as eventsLoader } from "./pages/EventsPage";
 import {
   LoginPage,
   SignupPage,
@@ -83,6 +84,7 @@ const App = () => {
         {
           path: "/events",
           element: <EventsPage />,
+          loader: eventsLoader,
         },
         {
           path: "/about",

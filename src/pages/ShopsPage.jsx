@@ -26,7 +26,11 @@ const ShopsPage = () => {
               </h1>
             </div>
             <div className="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-6 lg:grid-cols-4 lg:gap-6 xl:grid-cols-5 xl:gap-7 mb-12">
-              <ShopCard />
+              {loadedShops && loadedShops.length > 0
+                ? loadedShops.map((item, index) => (
+                    <ShopCard shop={item} key={index} />
+                  ))
+                : null}
             </div>
           </div>
         )}

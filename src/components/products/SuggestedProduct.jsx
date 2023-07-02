@@ -3,14 +3,34 @@ import { useState } from "react";
 import { productData } from "../../static/data";
 import styles from "../../styles/styles";
 import ProductCard from "../ProductCard";
+import { axiosInstanceGet } from "../../utils/axiosInstance";
 
 const SuggestedProduct = ({ data }) => {
   const [products, setProducts] = useState(null);
+
+  const getCategoryProducts = async (categoryName) => {
+    try {
+      const response = await axiosInstanceGet.get(
+        `/products/c/${categoryName}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      // Handle error
+      throw new Error("Failed to retrieve category products");
+    }
+  };
+
   useEffect(() => {
-    const d =
-      productData && productData.filter((i) => i.category === data.category);
-    setProducts(d);
-  }, []);
+    getCategoryProducts(data.category)
+      .then((products) => {
+        const filteredProducts = products.filter(
+          (product) => product._id !== data._id
+        );
+        setProducts(filteredProducts);
+      })
+      .catch((err) => console.log(err));
+  }, [getCategoryProducts, data._id]);
 
   return (
     <div className=" font-Ubuntu">
