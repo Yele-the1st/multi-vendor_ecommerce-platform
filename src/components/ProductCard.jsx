@@ -1,14 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { StarIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { generateComponents } from "../utils/generateComponent";
 import ProductOverview from "./ProductOverview";
 import { backend_url } from "../utils/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { addTocart } from "../redux/actions/cartAction";
+import {
+  addToWishList,
+  removeFromWishList,
+} from "../redux/slices/wishListSlice";
+import { addToCart } from "../redux/slices/cartSlice";
 
 const ProductCard = ({ item, seller, isShop }) => {
+  const { wishList } = useSelector((state) => state.wishList);
+  const { cart } = useSelector((state) => state.cart);
   const [open, setOpen] = useState(false);
   const [click, setClick] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (wishList && wishList.find((i) => i._id === item._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [wishList]);
+
+  const removeFromWishListHandler = (item) => {
+    setClick(!click);
+    dispatch(removeFromWishList(item));
+  };
+
+  const addToWishListHandler = (item) => {
+    setClick(!click);
+    dispatch(addToWishList(item));
+  };
+
+  const addToCartHandler = (id) => {
+    const isItemExists = cart && cart.find((i) => i._id === id);
+    if (isItemExists) {
+      toast.error("Item already in cart");
+    } else {
+      const cartData = { ...item, qty: 1 };
+      dispatch(addToCart(cartData));
+      toast.success("Item added to cart");
+    }
+  };
 
   return (
     <div className=" group w-full hover:shadow-md rounded-t-xl  bg-white flex flex-col">
@@ -20,17 +60,27 @@ const ProductCard = ({ item, seller, isShop }) => {
             alt=""
           />
         </Link>
-        <button
-          className={`group-hover:animate-bounce group-hover:opacity-100 sm:opacity-0  absolute top-3 right-3 border p-1 rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
-        >
-          <HeartIcon
-            className={` ${
-              click ? "fill-pink-600 stroke-none" : "fill-none"
-            } w-5 h-5 stroke-2 `}
-            title="Add to wishlist"
-            onClick={() => setClick(!click)}
-          />
-        </button>
+        {click ? (
+          <button
+            className={`group-hover:animate-bounce group-hover:opacity-100 sm:opacity-0  absolute top-3 right-3 border p-1 rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
+          >
+            <HeartIcon
+              className={` fill-pink-600 stroke-none w-5 h-5 `}
+              title="Add to wishlist"
+              onClick={() => removeFromWishListHandler(item)}
+            />
+          </button>
+        ) : (
+          <button
+            className={`group-hover:animate-bounce group-hover:opacity-100 sm:opacity-0  absolute top-3 right-3 border p-1 rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
+          >
+            <HeartIcon
+              className={` w-5 h-5 stroke-2 `}
+              title="Add to wishlist"
+              onClick={() => addToWishListHandler(item)}
+            />
+          </button>
+        )}
         <button
           className={` hidden md:block group-hover:opacity-100  sm:opacity-0  absolute left-3 font-Ubuntu right-3 bottom-3 border p-1 text-center rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
           onClick={() => setOpen(!open)}
@@ -92,6 +142,7 @@ const ProductCard = ({ item, seller, isShop }) => {
         <div className=" mt-2 flex items-center justify-between">
           <button
             className={` py-3 px-4 lg:py-3 lg:px-4 flex items-center gap-3 rounded-xl whitespace-nowrap font-Ubuntu cursor-pointer shadow bg-transparent text-sm font-medium max-w-max hover:gap-5 hover:bg-black hover:text-white  transition-all duration-300 ease-linear delay-0`}
+            onClick={() => addToCartHandler(item._id)}
           >
             + Add to cart
             <ArrowRightIcon className=" w-4 h-4  " />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import image from "../assets/images/excitedimg.png";
 import {
   XMarkIcon,
@@ -9,16 +9,21 @@ import {
 import { StarIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { backend_url } from "../utils/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { addToCart } from "../redux/slices/cartSlice";
+import {
+  addToWishList,
+  removeFromWishList,
+} from "../redux/slices/wishListSlice";
 
 const ProductOverview = ({ setOpen, seller, item }) => {
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(false);
-
-  const handleMessageSubmit = () => {
-    const j = 1 + 1;
-    console.log(j);
-  };
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
+  const { wishList } = useSelector((state) => state.wishList);
 
   const decrementCount = () => {
     if (count > 1) {
@@ -26,7 +31,40 @@ const ProductOverview = ({ setOpen, seller, item }) => {
     }
   };
   const incrementCount = () => {
-    setCount(count + 1);
+    if (item.stock > count) {
+      setCount(count + 1);
+    } else {
+      toast.error("Item stock is limited");
+    }
+  };
+
+  const addToCartHandler = (id) => {
+    const isItemExists = cart && cart.find((i) => i._id === id);
+    if (isItemExists) {
+      toast.error("Item already in cart");
+    } else {
+      const cartData = { ...item, qty: count };
+      dispatch(addToCart(cartData));
+      toast.success("Item added to cart");
+    }
+  };
+
+  useEffect(() => {
+    if (wishList && wishList.find((i) => i._id === item._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [wishList]);
+
+  const removeFromWishListHandler = (item) => {
+    setClick(!click);
+    dispatch(removeFromWishList(item));
+  };
+
+  const addToWishListHandler = (item) => {
+    setClick(!click);
+    dispatch(addToWishList(item));
   };
 
   return (
@@ -117,21 +155,32 @@ const ProductOverview = ({ setOpen, seller, item }) => {
                       +
                     </button>
                   </div>
-                  <button
-                    className={`opacity-100 border p-2 rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
-                  >
-                    <HeartIcon
-                      className={` ${
-                        click ? "fill-pink-600 stroke-none" : "fill-none"
-                      } w-6 h-6 stroke-2 `}
-                      title="Add to wishlist"
-                      onClick={() => setClick(!click)}
-                    />
-                  </button>
+                  {click ? (
+                    <button
+                      className={`opacity-100 border p-2 rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
+                    >
+                      <HeartIcon
+                        className={` fill-pink-600 stroke-none w-6 h-6  `}
+                        title="Add to wishlist"
+                        onClick={() => removeFromWishListHandler(item)}
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      className={`opacity-100 border p-2 rounded-full hover:shadow-lg transition-all duration-300 ease-linear delay-0`}
+                    >
+                      <HeartIcon
+                        className={` stroke-2 w-6 h-6  `}
+                        title="Add to wishlist"
+                        onClick={() => addToWishListHandler(item)}
+                      />
+                    </button>
+                  )}
                 </section>
                 <section className="mt-7 pr-3 ">
                   <button
                     className={` py-4 px-5 lg:py-3 lg:px-4 flex items-center gap-3 rounded-xl whitespace-nowrap font-Ubuntu cursor-pointer shadow bg-transparent font-semibold max-w-max hover:gap-5 hover:bg-black hover:text-white  transition-all duration-300 ease-linear delay-0`}
+                    onClick={() => addToCartHandler(item._id)}
                   >
                     + Add to cart
                     <ArrowRightIcon className=" w-4 h-4 stroke-2  " />

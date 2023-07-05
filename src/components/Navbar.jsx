@@ -32,6 +32,8 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { cart } = useSelector((state) => state.cart);
+  const { wishList } = useSelector((state) => state.wishList);
   const [visible, setVisible] = useState(false);
   const [openUserDropdown, setOpenUserDropdown] = useState(false);
   const [openCart, setOpenCart] = useState(false);
@@ -139,7 +141,7 @@ const Navbar = () => {
           >
             <HeartIcon className="w-6 h-6 stroke-2 " />
             <span className=" absolute right-0 top-1 rounded-full bg-[#E0005B] text-[11px] font-bold min-w-[17px] py-[3px] px-[6px] m-0 text-white border-2 border-white font-Fira text-xs leading-tight  text-center ">
-              0
+              {wishList && wishList.length}
             </span>
           </button>
           {/* <BellIcon className="w-6 h-6 stroke-2" /> */}
@@ -150,7 +152,7 @@ const Navbar = () => {
           >
             <ShoppingCartIcon className="w-6 h-6 stroke-2" />
             <span className=" absolute right-0 top-1 rounded-full bg-[#E0005B] text-[11px] font-bold min-w-[17px] py-[3px] px-[6px] m-0 text-white border-2 border-white font-Fira text-xs leading-tight  text-center ">
-              0
+              {cart && cart.length}
             </span>
           </button>
         </div>

@@ -17,7 +17,7 @@ const ShopCard = ({ shop }) => {
           src={`${backend_url}${shop?.avatar && shop.avatar}`}
           alt="Bonnie image"
         />
-        <div className=" w-full bg-pink-300 mb-8 h-28 rounded-t-2xl overflow-hidden">
+        <div className=" w-full mb-8 h-28 rounded-t-2xl overflow-hidden">
           <div className=" relative">
             <div className=" absolute rounded-xl cursor-pointer top-2 right-2 p-2 bg-[#f4f4f4] shadow-xl">
               <PaperAirplaneIcon className=" w-4 h-4 -rotate-45" />

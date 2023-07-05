@@ -3,24 +3,32 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import styles from "../../styles/styles";
 import { HeartIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromWishList } from "../../redux/slices/wishListSlice";
+import { toast } from "react-toastify";
+import { addToCart } from "../../redux/slices/cartSlice";
+import { backend_url } from "../../utils/axiosInstance";
 
 const Wishlist = ({ setOpenWishlist, openWishlist }) => {
-  const cartData = [
-    {
-      name: "Iphone 14 pro max 256 gb ssd and 8gb ram silver colour",
-      description: "test",
-      price: 999,
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    },
-    {
-      name: "Iphone 14 pro max 256 gb ssd and 8gb ram silver colour",
-      description: "test",
-      price: 999,
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    },
-  ];
+  const { wishList } = useSelector((state) => state.wishList);
+  const { cart } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  const removeFromCartHandler = (data) => {
+    dispatch(removeFromWishList(data));
+  };
+
+  const addToCartHandler = (data) => {
+    const isItemExists = cart && cart.find((i) => i._id === data._id);
+    if (isItemExists) {
+      toast.error("Item already in cart");
+    } else {
+      const cartData = { ...data, qty: 1 };
+      dispatch(addToCart(cartData));
+      toast.success("Item added to cart");
+    }
+  };
+
   return (
     <div className=" relative z-20">
       <div
@@ -55,35 +63,47 @@ const Wishlist = ({ setOpenWishlist, openWishlist }) => {
               <div className={`${styles.noramlFlex} py-4`}>
                 <HeartIcon className="w-7 h-7 text-gray-900" />
                 <h5 className=" font-Ubuntu pl-2 font-medium whitespace-nowrap">
-                  3 items
+                  {wishList && wishList.length}
                 </h5>
               </div>
               {/* cart single items */}
-              <div className=" h-[calc(100vh-220px)] overflow-y-scroll  w-full mt-8 flow-root">
-                <div className=" overflow-y-auto  -my-6 divide-y divide-gray-200">
-                  {cartData &&
-                    cartData.map((i, index) => (
-                      <WishlistSingle
-                        setOpenWishlist={setOpenWishlist}
-                        key={index}
-                        data={i}
-                      />
-                    ))}
+              {wishList && wishList.length === 0 ? (
+                <div className=" h-[calc(100vh-360px)] overflow-y-scroll  w-full mt-8 flow-root">
+                  <div className=" font-Ubuntu text-lg font-semibold flex h-full justify-center flex-col items-center">
+                    No Item in cart
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <>
+                  <div className=" h-[calc(100vh-220px)] overflow-y-scroll  w-full mt-8 flow-root">
+                    <div className=" overflow-y-auto  -my-6 divide-y divide-gray-200">
+                      {wishList &&
+                        wishList.map((i, index) => (
+                          <WishlistSingle
+                            setOpenWishlist={setOpenWishlist}
+                            key={index}
+                            data={i}
+                            removeFromCartHandler={removeFromCartHandler}
+                            addToCartHandler={addToCartHandler}
+                          />
+                        ))}
+                    </div>
+                  </div>
 
-              <div className="mt-6 font-Ubuntu flex justify-center text-center text-sm text-gray-500">
-                <p>
-                  <button
-                    type="button"
-                    className="font-medium text-indigo-600 hover:text-indigo-500 ml-1"
-                    onClick={() => setOpenWishlist(false)}
-                  >
-                    Continue Shopping
-                    <span aria-hidden="true"> &rarr;</span>
-                  </button>
-                </p>
-              </div>
+                  <div className="mt-6 font-Ubuntu flex justify-center text-center text-sm text-gray-500">
+                    <p>
+                      <button
+                        type="button"
+                        className="font-medium text-indigo-600 hover:text-indigo-500 ml-1"
+                        onClick={() => setOpenWishlist(false)}
+                      >
+                        Continue Shopping
+                        <span aria-hidden="true"> &rarr;</span>
+                      </button>
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -92,12 +112,17 @@ const Wishlist = ({ setOpenWishlist, openWishlist }) => {
   );
 };
 
-const WishlistSingle = ({ setOpenWishlist, data }) => {
+const WishlistSingle = ({
+  setOpenWishlist,
+  removeFromCartHandler,
+  addToCartHandler,
+  data,
+}) => {
   return (
     <div className=" font-Ubuntu flex py-6">
       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
         <img
-          src={data.imageSrc}
+          src={`${backend_url}${data.images && data.images[0]}`}
           className="h-full w-full object-cover object-center"
         />
       </div>
@@ -107,18 +132,23 @@ const WishlistSingle = ({ setOpenWishlist, data }) => {
             <h3 className=" text-sm font-medium">
               <Link to={``}>{data.name}</Link>
             </h3>
-            <p className="ml-4 text-base font-semibold">${data.price}</p>
+            <p className="ml-4 text-base font-semibold">
+              $
+              {data.discountedPrice ? data.discountedPrice : data.originalPrice}
+            </p>
           </div>
           <p className="mt-1 text-sm text-gray-500">{data.description}</p>
         </div>
         <div className="flex mt-1 flex-1 items-end space-x-4 text-sm">
           <button
             className={` py-2 px-4 flex items-center rounded-xl whitespace-nowrap font-Ubuntu cursor-pointer shadow text-sm font-medium max-w-max bg-black text-white hover:scale-110 transition-all duration-300 ease-linear delay-0`}
+            onClick={() => addToCartHandler(data)}
           >
             Add to cart
           </button>
           <button
             className={` py-1.5 px-4 flex items-center rounded-xl whitespace-nowrap font-Ubuntu cursor-pointer shadow bg-transparent text-sm font-medium border-2 border-black max-w-max hover:bg-black hover:text-white transition-colors duration-300 ease-linear delay-0`}
+            onClick={() => removeFromCartHandler(data)}
           >
             Remove
           </button>

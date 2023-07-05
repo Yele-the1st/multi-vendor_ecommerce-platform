@@ -7,7 +7,6 @@ import { useLocation } from "react-router-dom";
 import { axiosInstanceGet } from "../utils/axiosInstance";
 import ProductCard from "../components/ProductCard";
 import { cardData } from "../data/CategoryData";
-import { CubeIcon } from "@heroicons/react/24/solid";
 import styles from "../styles/styles";
 
 const getCategoryProducts = async (categoryName) => {
@@ -47,9 +46,13 @@ const ProductsCategoryPage = () => {
               products.length > 0 &&
               cardData?.find((option) => option.value === products[0]?.category)
                 ?.imageUrl
+                ? cardData.find(
+                    (option) => option.value === products[0]?.category
+                  ).imageUrl
+                : ""
             }
             alt=""
-            className=" max-w-full align-middle "
+            className="max-w-full align-middle"
             loading="lazy"
           />
         </div>

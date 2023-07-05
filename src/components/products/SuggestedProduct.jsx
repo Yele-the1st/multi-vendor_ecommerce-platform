@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { productData } from "../../static/data";
 import styles from "../../styles/styles";
 import ProductCard from "../ProductCard";
 import { axiosInstanceGet } from "../../utils/axiosInstance";

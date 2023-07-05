@@ -5,9 +5,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const ShopHomePage = () => {
-  const { fetchedSeller, fetchedLoading, fetchedError, seller } = useSelector(
-    (state) => state.seller
-  );
+  const { seller } = useSelector((state) => state.seller);
   let isOwner;
   const { id } = useParams();
   if (seller?._id === id) {

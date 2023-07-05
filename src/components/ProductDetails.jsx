@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/styles";
 import { HeartIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import {
@@ -10,12 +10,19 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Accordian from "./accordian/Accordian";
 import { backend_url } from "../utils/axiosInstance";
+import { addToCart } from "../redux/slices/cartSlice";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishList } from "../redux/slices/wishListSlice";
 
 const ProductDetails = ({ data }) => {
+  const { cart } = useSelector((state) => state.cart);
+  const { wishList } = useSelector((state) => state.wishList);
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const decrementCount = () => {
     if (count > 1) {
@@ -23,7 +30,35 @@ const ProductDetails = ({ data }) => {
     }
   };
   const incrementCount = () => {
-    setCount(count + 1);
+    if (data.stock > count) {
+      setCount(count + 1);
+    } else {
+      toast.error("Item stock is limited");
+    }
+  };
+
+  useEffect(() => {
+    if (wishList && wishList.find((i) => i._id === data._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [wishList]);
+
+  const addToCartHandler = (id) => {
+    const isItemExists = cart && cart.find((i) => i._id === id);
+    if (isItemExists) {
+      toast.error("Item already in cart");
+    } else {
+      const cartData = { ...data, qty: count };
+      dispatch(addToCart(cartData));
+      toast.success("Item added to cart");
+    }
+  };
+
+  const addToWishListHandler = (item) => {
+    setClick(!click);
+    dispatch(addToWishList(item));
   };
 
   return (
@@ -90,10 +125,21 @@ const ProductDetails = ({ data }) => {
             <div className="mb-2 lg:float-right lg:w-[33%] flex flex-col ">
               <div className="pr-8 flex flex-col"></div>
               <div className=" flex items-center justify-between">
-                <h3 className=" font-semibold text-[#A5192E]">
-                  Low in Stock, only 3 left
-                </h3>
-                <ArchiveBoxIcon className="w-5 h-5 text-[#A5192E]" />
+                {data.stock < 3 ? (
+                  <>
+                    <h3 className=" font-semibold text-[#A5192E]">
+                      Low in Stock, only 3 left
+                    </h3>
+                    <ArchiveBoxIcon className="w-5 h-5 text-[#A5192E]" />
+                  </>
+                ) : (
+                  <>
+                    <h3 className=" font-semibold text-green-600">
+                      More thank 3 Stock left.
+                    </h3>
+                    <ArchiveBoxIcon className="w-5 h-5 text-green-600" />
+                  </>
+                )}
               </div>
               <h2 className=" font-semibold text-2xl my-2">
                 $
@@ -144,12 +190,18 @@ const ProductDetails = ({ data }) => {
                   Buy it NOW
                 </p>
               </button>
-              <button className=" group bg-black hover:scale-y-105 hover:shadow-xl  text-white mb-3   font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out">
+              <button
+                className=" group border-2 border-black bg-black hover:scale-y-105 hover:shadow-xl  text-white mb-3   font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out"
+                onClick={() => addToCartHandler(data._id)}
+              >
                 <p className="group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out">
                   Add to Cart
                 </p>
               </button>
-              <button className=" group hover:scale-y-105 hover:shadow-xl hover:bg-[#f4f4f4]  mb-3  font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out">
+              <button
+                className=" border-2 border-transparent group hover:scale-y-105 hover:shadow-xl hover:bg-[#f4f4f4]  mb-3  font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out"
+                onClick={() => addToWishListHandler(data)}
+              >
                 <div className="group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out flex gap-2 justify-center items-center">
                   <HeartIcon className="w-5 h-5 fill-pink-500 stroke-none" />
                   <p>Add to favourites</p>
