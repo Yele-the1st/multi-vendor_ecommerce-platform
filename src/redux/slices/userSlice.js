@@ -1,5 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadUser, logoutUser, loginUser } from "../actions/userAction";
+import {
+  loadUser,
+  logoutUser,
+  loginUser,
+  updateUserInfo,
+  updateUserAddress,
+  deleteUserAddress,
+} from "../actions/userAction";
+import { toast } from "react-toastify";
 
 const userSlice = createSlice({
   name: "user",
@@ -27,6 +35,10 @@ const userSlice = createSlice({
         state.isAuthenticated = true;
         state.user = action.payload;
         state.error = null;
+
+        // Save authentication data in local storage
+        localStorage.setItem("isAuthenticated", true);
+        localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(loginUser.rejected, (state, action) => {
         // Handle login failure
@@ -71,6 +83,60 @@ const userSlice = createSlice({
         // Save authentication data in local storage
         localStorage.removeItem("isAuthenticated");
         localStorage.removeItem("user");
+      })
+      .addCase(updateUserInfo.pending, (state) => {
+        // Handle pending state if needed
+        state.loading = true;
+      })
+      .addCase(updateUserInfo.fulfilled, (state, action) => {
+        // Handle successful login
+        // Update state with the received user data or token
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(updateUserInfo.rejected, (state, action) => {
+        // Handle login failure
+        // Update state or show error message
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateUserAddress.pending, (state) => {
+        // Handle pending state if needed
+        state.addyLoading = true;
+      })
+      .addCase(updateUserAddress.fulfilled, (state, action) => {
+        // Handle successful login
+        // Update state with the received user data or token
+        state.addyLoading = false;
+        state.user = action.payload;
+
+        toast.success("Successfully added Address");
+      })
+      .addCase(updateUserAddress.rejected, (state, action) => {
+        // Handle login failure
+        // Update state or show error message
+        state.addyLoading = false;
+
+        toast.error(action.error.message);
+      })
+      .addCase(deleteUserAddress.pending, (state) => {
+        // Handle pending state if needed
+        state.addyLoading = true;
+      })
+      .addCase(deleteUserAddress.fulfilled, (state, action) => {
+        // Handle successful login
+        // Update state with the received user data or token
+        state.addyLoading = false;
+        state.user = action.payload;
+
+        toast.success("Successfully deleted Address");
+      })
+      .addCase(deleteUserAddress.rejected, (state, action) => {
+        // Handle login failure
+        // Update state or show error message
+        state.addyLoading = false;
+
+        toast.error(action.error.message);
       });
   },
 });

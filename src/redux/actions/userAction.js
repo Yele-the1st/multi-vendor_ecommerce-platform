@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   axiosInstanceGet,
   axiosInstanceJsonDataWithCredentials,
+  axiosInstanceFormDataWithCredentials,
 } from "../../utils/axiosInstance";
 
 export const loginUser = createAsyncThunk(
@@ -50,3 +51,57 @@ export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
     throw error.response.data.message;
   }
 });
+
+export const updateUserInfo = createAsyncThunk(
+  "user/updateUserInfo",
+  async (newForm) => {
+    try {
+      const response = await axiosInstanceFormDataWithCredentials.put(
+        "/users/update-user-info",
+        newForm
+      );
+      return response.data.user;
+    } catch (error) {
+      console.error(error.response.data.message);
+      throw error.response.data.message;
+    }
+  }
+);
+
+export const updateUserAddress = createAsyncThunk(
+  "user/updateUserAddress",
+  async ({ country, state, city, streetAddress, zipCode, addressType }) => {
+    try {
+      const response = await axiosInstanceJsonDataWithCredentials.put(
+        "/users/update-user-addresses",
+        {
+          country,
+          state,
+          city,
+          streetAddress,
+          zipCode,
+          addressType,
+        }
+      );
+      return response.data.user;
+    } catch (error) {
+      console.error(error.response.data.message);
+      throw error.response.data.message;
+    }
+  }
+);
+
+export const deleteUserAddress = createAsyncThunk(
+  "user/deleteUserAddress",
+  async (id) => {
+    try {
+      const response = await axiosInstanceJsonDataWithCredentials.delete(
+        `/users/delete-user-address/${id}`
+      );
+      return response.data.user;
+    } catch (error) {
+      console.error(error.response.data.message);
+      throw error.response.data.message;
+    }
+  }
+);

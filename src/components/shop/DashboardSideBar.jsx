@@ -16,9 +16,9 @@ import { Link } from "react-router-dom";
 
 const DashboardSideBar = ({ active }) => {
   return (
-    <div className=" transition-all whitespace-nowrap duration-300 ease-in-out group/full w-full h-[calc(100vh-87px)] font-Ubuntu overflow-y-scroll bg-white shadow-lg sticky top-0 left-0 z-10 py-6  ">
+    <div className=" transition-all whitespace-nowrap duration-300 ease-in-out group/full  min-w-max h-[calc(100vh-87px)] font-Ubuntu overflow-y-scroll bg-white shadow-lg sticky top-0 left-0 z-10 py-6  ">
       {/* single item */}
-      <div className="space-y-2 ">
+      <div className="space-y-2 w-full">
         <div className="w-full flex items-center px-3 ">
           <Link
             to={`/shop/dashboard`}
