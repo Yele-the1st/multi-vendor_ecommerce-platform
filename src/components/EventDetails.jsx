@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishList } from "../redux/slices/wishListSlice";
 
-const ProductDetails = ({ data }) => {
+const EventDetails = ({ data }) => {
   const { cart } = useSelector((state) => state.cart);
   const { wishList } = useSelector((state) => state.wishList);
   const [count, setCount] = useState(1);
@@ -408,4 +408,4 @@ const ProductDetailsInfo = ({ data }) => {
   );
 };
 
-export default ProductDetails;
+export default EventDetails;

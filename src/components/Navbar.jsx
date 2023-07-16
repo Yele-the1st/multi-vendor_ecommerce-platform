@@ -177,7 +177,7 @@ const Navbar = () => {
               <div className="lg:gap-1 grid grid-cols-1 lg:grid-cols-3 items-start max-h-[calc(100vh-250px)] lg:max-h-max  ">
                 {cardData.map((card, index) => (
                   <CategoryItems
-                    link={`/products/c/${card.value}`}
+                    link={`/products?category=${card.value}`}
                     key={index}
                     title={card.title}
                     description={card.description}

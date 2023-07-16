@@ -20,6 +20,17 @@ export const loadShopEvents = createAsyncThunk(
   }
 );
 
+export const loadEvent = createAsyncThunk("events/loadevent", async (id) => {
+  try {
+    const response = await axiosInstanceGet.get(`/events/get-event/${id}`);
+    console.log(response.data.event);
+    return response.data.event;
+  } catch (error) {
+    console.log(error.response.data.message);
+    throw error.response.data.message;
+  }
+});
+
 export const createEvent = createAsyncThunk(
   "events/createEvent",
   async (newForm) => {

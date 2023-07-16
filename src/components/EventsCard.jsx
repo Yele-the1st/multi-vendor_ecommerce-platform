@@ -1,9 +1,26 @@
 import React from "react";
 import CountDown from "./CountDown";
 import { backend_url } from "../utils/axiosInstance";
+import { Link } from "react-router-dom";
+import { addToCart } from "../redux/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const EventsCard = ({ event }) => {
+  const { cart } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   console.log(event);
+
+  const addToCartHandler = (event) => {
+    const isItemExists = cart && cart.find((i) => i._id === event._id);
+    if (isItemExists) {
+      toast.error("Item already in cart");
+    } else {
+      const cartData = { ...event, qty: 1 };
+      dispatch(addToCart(cartData));
+      toast.success("Item added to cart");
+    }
+  };
   return (
     <div
       className={` mt-10 bg-white rounded-2xl p-4 grid w-full grid-cols-1 font-Ubuntu items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8 shadow `}
@@ -49,6 +66,24 @@ const EventsCard = ({ event }) => {
             startDate={event.start_date}
             finishDate={event.finish_date}
           />
+        </section>
+        <section className=" mt-6 flex items-center">
+          <button
+            className=" mr-6  bg-black text-white group hover:scale-y-105 hover:shadow-xl border-2 border-black mb-3 font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out"
+            onClick={() => addToCartHandler(event)}
+          >
+            <p className="group-hover:scale-105 w-full transition-all delay-0 duration-300 ease-in-out">
+              Add to Cart <span aria-hidden="true">&rarr;</span>
+            </p>
+          </button>
+          <Link
+            to={`/event/${event?._id}`}
+            className=" group hover:scale-y-105 hover:shadow-xl border-2 border-black mb-3 font-semibold text-base rounded-2xl py-3 px-6 items-center transition-all delay-0 duration-300 ease-in-out"
+          >
+            <p className="group-hover:scale-105 transition-all delay-0 duration-300 ease-in-out">
+              See Details
+            </p>
+          </Link>
         </section>
       </div>
     </div>

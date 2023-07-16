@@ -71,7 +71,7 @@ export const backend_url = "http://localhost:6600/uploads/";
 //   return item.value;
 // }
 
-// // Example usage
-// setItemWithExpiry('myKey', 'myValue', 60); // Set item with expiry of 60 minutes
-// const retrievedValue = getItemWithExpiry('myKey');
-// console.log(retrievedValue); // Output: 'myValue' (if retrieved within 60 minutes)
+// // // Example usage
+// // setItemWithExpiry('myKey', 'myValue', 60); // Set item with expiry of 60 minutes
+// // const retrievedValue = getItemWithExpiry('myKey');
+// // console.log(retrievedValue); // Output: 'myValue' (if retrieved within 60 minutes)

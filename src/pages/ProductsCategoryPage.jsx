@@ -33,7 +33,7 @@ const ProductsCategoryPage = () => {
         setProducts(products);
       })
       .catch((err) => console.log(err));
-  }, [getCategoryProducts, pathname]);
+  }, [getCategoryProducts]);
 
   console.log(products?.category);
 

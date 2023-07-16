@@ -1,5 +1,8 @@
-import React, { useState } from "react";
-import { backend_url } from "../../utils/axiosInstance";
+import React, { useEffect, useState } from "react";
+import {
+  axiosInstanceJsonDataWithCredentials,
+  backend_url,
+} from "../../utils/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BookmarkIcon,
@@ -35,6 +38,8 @@ import {
 } from "../../redux/actions/userAction";
 import { toast } from "react-toastify";
 import { City, Country, State } from "country-state-city";
+import styles from "../../styles/styles";
+import { getUserOrders } from "../../redux/actions/orderAction";
 
 const ProfileContent = ({ active, setActive }) => {
   const { user } = useSelector((state) => state.user);
@@ -277,7 +282,7 @@ const ProfileContent = ({ active, setActive }) => {
       {/* Payment Method Pane */}
       {active === 6 && (
         <div className="flex flex-col justify-center w-full">
-          <PaymentMethod />
+          <ChangePassword />
         </div>
       )}
       {/* user Address Pane */}
@@ -291,18 +296,14 @@ const ProfileContent = ({ active, setActive }) => {
 };
 
 const AllOrders = () => {
-  const orders = [
-    {
-      _id: "7433874839843898489",
-      orderItems: [
-        {
-          name: "Iphone 14 pro max",
-        },
-      ],
-      totalPrice: 120,
-      orderStatus: "Processing",
-    },
-  ];
+  const { userOrders } = useSelector((state) => state.order);
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserOrders(user._id));
+  }, []);
+  console.log(userOrders);
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -357,13 +358,13 @@ const AllOrders = () => {
 
   const row = [];
 
-  orders &&
-    orders.forEach((item) => {
+  userOrders &&
+    userOrders.forEach((item) => {
       row.push({
         id: item._id,
-        itemsQty: item.orderItems.length,
+        itemsQty: item.cart.length,
         total: "US$ " + item.totalPrice,
-        status: item.orderStatus,
+        status: item.status,
       });
     });
 
@@ -559,43 +560,84 @@ const TrackOrder = () => {
   );
 };
 
-const PaymentMethod = () => {
+const ChangePassword = () => {
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const passwordChangeHandler = async (e) => {
+    e.preventDefault();
+
+    await axiosInstanceJsonDataWithCredentials
+      .put(`/users/update-user-password`, {
+        oldPassword,
+        newPassword,
+        confirmPassword,
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
+  };
+
   return (
-    <div className="w-full font-Ubuntu">
-      <div className="pb-3 items-center gap-2 flex cursor-pointer">
-        <ArrowLeftIcon className="w-4 h-4 stroke-2" />
-        <h1 className=" font-Ubuntu font-semibold">Back to shopping</h1>
-      </div>
-      <div className=" flex flex-col sm:flex-row w-full items-start sm:items-center  justify-between">
-        <h2 className=" font-Ubuntu text-3xl lg:text-5xl font-bold py-6 whitespace-nowrap">
-          Payment Methods
-        </h2>
-        <button className="mb-1 font-medium whitespace-nowrap py-3 px-8 shadow-md  rounded-xl bg-[#f6f6f4] text-black hover:bg-black hover:text-white transition-all duration-300 ease-linear delay-0">
-          Add New
-        </button>
-      </div>
-      <div className="w-full mt-10 bg-white max-h-max max-w-max lg:max-w-full space-y-2 lg:space-x-4 lg:space-y-0 rounded-2xl flex flex-col lg:flex-row  lg:items-center p-3 shadow justify-between pr-10  ">
-        <div className="flex items-center">
-          <img
-            src="https://bonik-react.vercel.app/assets/images/payment-methods/Visa.svg"
-            alt=""
-          />
-        </div>
-        <div className=" flex items-center">
-          <h6>1234 **** **** ****</h6>
-        </div>
-        <div className="flex items-center">
-          <h5 className=""> 08/2022</h5>
-        </div>
-        <div className=" shrink-0 cursor-pointer flex  lg:items-center justify-end  lg:justify-between ">
-          <div className=" hover:bg-pink-200 hover:scale-110 p-2 rounded-2xl hover:shadow-lg ">
-            <TrashIcon className="w-6 h-6 " />
+    <div className="w-full px-5">
+      <h1 className="block text-[25px] text-center font-[600] text-[#000000ba] pb-2">
+        Change Password
+      </h1>
+      <div className="w-full">
+        <form
+          aria-required
+          onSubmit={passwordChangeHandler}
+          className="flex flex-col items-center"
+        >
+          <div className=" w-[100%] 800px:w-[50%] mt-5">
+            <label className="block pb-2">Enter your old password</label>
+            <input
+              type="password"
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              required
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
           </div>
-        </div>
+          <div className=" w-[100%] 800px:w-[50%] mt-2">
+            <label className="block pb-2">Enter your new password</label>
+            <input
+              type="password"
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              required
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
+          <div className=" w-[100%] 800px:w-[50%] mt-2">
+            <label className="block pb-2">Enter your confirm password</label>
+            <input
+              type="password"
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <input
+              className=" rounded-xl cursor-pointer mt-8 w-[95%] bg-black px-3 py-2.5 font-semibold text-white shadow-sm hover:scale-y-105 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              required
+              value="Update"
+              type="submit"
+            />
+          </div>
+        </form>
       </div>
     </div>
   );
 };
+
 const Address = () => {
   const [open, setOpen] = useState(false);
   const [country, setCountry] = useState("");

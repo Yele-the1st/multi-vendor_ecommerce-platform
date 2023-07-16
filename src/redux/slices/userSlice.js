@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
+    isAuthenticated: localStorage.getItem("isAuthenticated"),
     loading: false,
     user: JSON.parse(localStorage.getItem("user")),
     error: null,
@@ -37,12 +37,14 @@ const userSlice = createSlice({
         state.error = null;
 
         // Save authentication data in local storage
+        toast.success("Successfully Logged in");
         localStorage.setItem("isAuthenticated", true);
         localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(loginUser.rejected, (state, action) => {
         // Handle login failure
         // Update state or show error message
+        toast.error(action.error.message);
         state.loading = false;
         state.error = action.error.message;
         state.isAuthenticated = false;
@@ -93,6 +95,8 @@ const userSlice = createSlice({
         // Update state with the received user data or token
         state.loading = false;
         state.user = action.payload;
+
+        localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(updateUserInfo.rejected, (state, action) => {
         // Handle login failure
@@ -111,6 +115,7 @@ const userSlice = createSlice({
         state.user = action.payload;
 
         toast.success("Successfully added Address");
+        localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(updateUserAddress.rejected, (state, action) => {
         // Handle login failure
@@ -130,6 +135,7 @@ const userSlice = createSlice({
         state.user = action.payload;
 
         toast.success("Successfully deleted Address");
+        localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(deleteUserAddress.rejected, (state, action) => {
         // Handle login failure

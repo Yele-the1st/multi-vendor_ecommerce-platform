@@ -34,12 +34,14 @@ export function useProductQuery() {
       search.get("page"),
       search.get("sort"),
       search.get("priceRange"),
+      search.get("category"),
     ],
     async () => {
       const query = {
         page: search.get("page"),
         sort: search.get("sort"),
         priceRange: search.get("priceRange"),
+        category: search.get("category"),
       };
 
       // if (!query || query.trim() === "") {

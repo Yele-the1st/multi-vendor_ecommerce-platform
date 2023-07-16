@@ -3,6 +3,8 @@ import {
   BanknotesIcon,
   EnvelopeIcon,
   IdentificationIcon,
+  LockClosedIcon,
+  LockOpenIcon,
   ReceiptRefundIcon,
   ShoppingBagIcon,
   UserIcon,
@@ -109,13 +111,13 @@ const ProfileSidebar = ({ active, setActive }) => {
         } flex items-center cursor-pointer w-full mb-6`}
         onClick={() => setActive(6)}
       >
-        <BanknotesIcon
+        <LockClosedIcon
           className={` ${active === 6 ? "scale-110" : "text-black"} w-6 h-6 `}
         />
         <span
           className={`${active === 6 ? "scale-110" : ""} pl-3 hidden lg:block`}
         >
-          Payment Methods
+          Change Password
         </span>
       </div>
       <div

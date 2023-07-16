@@ -3,6 +3,7 @@ import {
   createEvent,
   loadShopEvents,
   deleteEvent,
+  loadEvent,
 } from "../actions/eventAction.js";
 
 const eventSlice = createSlice({
@@ -14,6 +15,7 @@ const eventSlice = createSlice({
     success: false,
     error: null,
     message: null,
+    singleEvent: null,
   },
   reducers: {
     clearErrors: (state) => {
@@ -59,6 +61,26 @@ const eventSlice = createSlice({
         state.error = null;
       })
       .addCase(loadShopEvents.rejected, (state, action) => {
+        // Handle login failure
+        // Update state or show error message
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //get single Product
+
+      .addCase(loadEvent.pending, (state, action) => {
+        // Handle pending state if needed
+        state.loading = true;
+      })
+      .addCase(loadEvent.fulfilled, (state, action) => {
+        // Handle successful creation
+        // Update state with the received data
+        state.loading = false;
+        state.singleEvent = action.payload;
+        state.error = null;
+      })
+      .addCase(loadEvent.rejected, (state, action) => {
         // Handle login failure
         // Update state or show error message
         state.loading = false;

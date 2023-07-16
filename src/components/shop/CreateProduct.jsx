@@ -90,7 +90,7 @@ const CreateProduct = () => {
             Create a Product
           </h2>
         </div>
-        <div className="h-full overflow-x-hidden overflow-y-scroll sm:mx-auto font-Ubuntu sm:max-w-lg ">
+        <div className="h-full overflow-y-scroll sm:mx-auto font-Ubuntu sm:max-w-lg ">
           <form className=" mb-32" onSubmit={handleSubmit}>
             <div className=" grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-8">
               <div className="col-span-full">

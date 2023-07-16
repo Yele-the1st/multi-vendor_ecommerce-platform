@@ -6,6 +6,7 @@ import eventSlice from "./slices/eventSlice";
 import couponSlice from "./slices/couponSlice";
 import cartSlice from "./slices/cartSlice";
 import wishListSlice from "./slices/wishListSlice";
+import orderSlice from "./slices/orderSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     coupon: couponSlice,
     cart: cartSlice,
     wishList: wishListSlice,
+    order: orderSlice,
   },
 });
 

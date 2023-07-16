@@ -30,13 +30,16 @@ import {
   ShopCreateEventPage,
   ShopEventsPage,
   ShopCouponsPage,
-  ProductsCategoryPage,
   ShopsPage,
+  CheckoutPage,
+  PaymentPage,
+  OrderSuccessPage,
+  EventPage,
 } from "./Routes.js";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./custom-toastify.css";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { loadUser } from "./redux/actions/userAction";
 import { useDispatch } from "react-redux";
 import ProtectedRoutes from "./components/ProtectedRoutes";
@@ -45,14 +48,41 @@ import {
   loadAllProduct,
   loadLatestProduct,
 } from "./redux/actions/productAction";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { axiosInstanceGet } from "./utils/axiosInstance";
 
 const App = () => {
   const dispatch = useDispatch();
+  const [stripeApiKey, setStripeApiKey] = useState();
+
+  async function getStripeApikey() {
+    try {
+      const { data } = await axiosInstanceGet.get(`/payments/stripeapikey`);
+      setStripeApiKey(data.stripeApiKey);
+    } catch (error) {
+      // Handle the error when retrieving the Stripe API key
+      console.error("Error retrieving Stripe API key:", error.message);
+      toast.error(error.message);
+      // Display an error message to the user or handle the error as needed
+      // Example:
+      // displayErrorMessage('An error occurred while retrieving the Stripe API key.');
+    }
+  }
+
+  const stripePromise = useMemo(() => {
+    if (stripeApiKey) {
+      return loadStripe(stripeApiKey);
+    }
+  }, [stripeApiKey]);
 
   useEffect(() => {
     // dispatch(loadUser());
     dispatch(loadAllProduct());
+    getStripeApikey();
   }, []);
+
+  console.log(stripeApiKey);
 
   const router = createBrowserRouter([
     {
@@ -73,12 +103,12 @@ const App = () => {
           element: <ProductsPage />,
         },
         {
-          path: "/products/c/:name",
-          element: <ProductsCategoryPage />,
-        },
-        {
           path: "/product/:id",
           element: <ProductPage />,
+        },
+        {
+          path: "/event/:id",
+          element: <EventPage />,
         },
 
         {
@@ -91,9 +121,31 @@ const App = () => {
           element: <FaqPage />,
         },
         {
+          path: "/order/success",
+          element: <OrderSuccessPage />,
+        },
+        {
           path: "/shops",
           element: <ShopsPage />,
           loader: shopsLoader,
+        },
+        {
+          path: "/app/checkout",
+          element: (
+            <ProtectedRoutes type={"user"} children={<CheckoutPage />} />
+          ),
+        },
+        {
+          path: "/app/payment",
+          element: (
+            <ProtectedRoutes type={"user"}>
+              {stripeApiKey && (
+                <Elements stripe={stripePromise}>
+                  <PaymentPage />
+                </Elements>
+              )}
+            </ProtectedRoutes>
+          ),
         },
       ],
     },

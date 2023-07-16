@@ -6,17 +6,13 @@ const ProtectedRoutes = ({ type, children }) => {
   const user = useSelector((state) => state.user);
   const seller = useSelector((state) => state.seller);
 
-  // if (type === "user" && !user.loading && !user.isAuthenticated) {
-  //   return <Navigate to="/auth/login" replace />;
-  // }
+  if (type === "user" && !user.isAuthenticated) {
+    return <Navigate to="/auth/login" replace />;
+  }
 
-  // if (type === "seller" && seller.loading) {
-  //   return <Loader />;
-  // }
-
-  // if (type === "seller" && !seller.loading && !seller.sellerIsAuthenticated) {
-  //   return <Navigate to="/auth/shop/login" replace />;
-  // }
+  if (type === "seller" && !seller.sellerIsAuthenticated) {
+    return <Navigate to="/auth/shop/login" replace />;
+  }
 
   return children;
 };

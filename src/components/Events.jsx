@@ -1,9 +1,7 @@
 import React, { Suspense } from "react";
 import EventsCard from "./EventsCard";
 import styles from "../styles/styles";
-import { axiosInstanceGet } from "../utils/axiosInstance";
-import { Await, defer, useLoaderData } from "react-router-dom";
-import Loader from "./routes/Loader";
+
 import { SwatchIcon, TicketIcon } from "@heroicons/react/24/solid";
 
 const Events = ({ events }) => {

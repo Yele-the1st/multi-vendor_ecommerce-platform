@@ -53,7 +53,6 @@ const Login = () => {
     resetPasswordInput();
     navigate("/");
     dispatch(loginUser({ email: email, password: password }));
-    toast.success("Successfully Logged in");
   };
 
   return (
