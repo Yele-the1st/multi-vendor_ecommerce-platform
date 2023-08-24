@@ -12,7 +12,6 @@ import {
 } from "@heroicons/react/24/outline";
 
 import { useNavigate } from "react-router-dom";
-import { backend_url } from "../../utils/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
@@ -155,7 +154,7 @@ const ProfileSidebar = ({ active, setActive }) => {
       {user?.avatar ? (
         <div className=" flex items-center relative h-[35px ] w-[35px] mr-1 rounded-2xl shadow-xl">
           <img
-            src={`${backend_url}${user?.avatar}`}
+            src={`${user?.avatar.url}`}
             className=" h-full w-full rounded-2xl object-center object-cover "
             alt=""
           />

@@ -1,6 +1,5 @@
 import React from "react";
 import CountDown from "./CountDown";
-import { backend_url } from "../utils/axiosInstance";
 import { Link } from "react-router-dom";
 import { addToCart } from "../redux/slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +27,7 @@ const EventsCard = ({ event }) => {
       <div className=" sm:col-span-4 lg:col-span-5">
         <div className="aspect-h-3 aspect-w-2 overflow-hidden rounded-lg bg-gray-100">
           <img
-            src={`${backend_url}${event?.images && event.images[0]}`}
+            src={`${event?.images && event.images[0]?.url}`}
             alt=""
             className="object-cover object-center"
           />

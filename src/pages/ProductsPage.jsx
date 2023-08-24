@@ -1,5 +1,5 @@
 import styles from "../styles/styles";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import ProductCard from "../components/ProductCard";
 import { axiosInstanceGet } from "../utils/axiosInstance";
@@ -35,6 +35,12 @@ const ProductsPage = () => {
     { value: "priceDesc", label: "Highest Price" },
     { value: "", label: "Relevancy" },
   ];
+
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);

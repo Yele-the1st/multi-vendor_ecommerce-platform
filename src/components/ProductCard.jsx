@@ -4,7 +4,6 @@ import { StarIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { generateComponents } from "../utils/generateComponent";
 import ProductOverview from "./ProductOverview";
-import { backend_url } from "../utils/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addTocart } from "../redux/actions/cartAction";
@@ -56,7 +55,7 @@ const ProductCard = ({ item, seller, isShop }) => {
         <Link to={`/product/${item?._id}`}>
           <img
             className="absolute inset-0 w-full h-full  overflow-clip object-contain"
-            src={`${backend_url}${item?.images && item.images[0]}`}
+            src={`${item?.images && item.images[0]?.url}`}
             alt=""
           />
         </Link>
@@ -94,7 +93,7 @@ const ProductCard = ({ item, seller, isShop }) => {
           <div className="flex font-Ubuntu mb-2 font-semibold items-center gap-2.5 ">
             <img
               className="w-[26px] h-[26px]  object-cover rounded-full "
-              src={`${backend_url}${seller?.avatar && seller?.avatar}`}
+              src={`${seller?.avatar && seller?.avatar?.url}`}
               alt=""
             />
             <span className="text-sm">{seller?.shopname}</span>

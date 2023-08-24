@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { backend_url } from "../../utils/axiosInstance";
 import {
   IdentificationIcon,
   CubeIcon,
@@ -26,6 +25,7 @@ import { productData } from "../../static/data";
 import ProductCard from "../ProductCard";
 import { logoutSeller, loadSeller } from "../../redux/actions/sellerAction";
 import { toast } from "react-toastify";
+import Loader from "../routes/Loader";
 
 const ShopInfo = ({ isOwner }) => {
   const [dropdown, setDropdown] = useState(false);
@@ -45,7 +45,7 @@ const ShopInfo = ({ isOwner }) => {
   useEffect(() => {
     dispatch(loadSeller(id));
   }, [dispatch]);
-
+  console.log(fetchedSeller);
   return (
     <div className=" transition-all ease-in-out duration-300 delay-0 relative  w-full overflow-y-hidden">
       <div className=" z-20 absolute top-1 right-1">
@@ -121,24 +121,25 @@ const ShopInfo = ({ isOwner }) => {
       {active === 1 ? (
         <div className=" overflow-y-scroll w-full h-full flex flex-col gap-6 items-center lg:flex-row ">
           <div className=" lg:w-1/3 py-5">
-            <div className="w-full flex items-center justify-center">
-              <div className=" w-36 h-36 rounded-full">
-                <img
-                  src={`${backend_url}${fetchedSeller?.avatar}`}
-                  alt=""
-                  className="w-full h-full object-center object-cover rounded-full"
-                />
+            {fetchedSeller?.avatar && (
+              <div className="w-full flex items-center justify-center">
+                <div className=" w-36 h-36 rounded-full">
+                  <img
+                    src={`${fetchedSeller?.avatar?.url}`}
+                    alt=""
+                    className="w-full h-full object-center object-cover rounded-full"
+                    loading="lazy"
+                  />
+                </div>
               </div>
-            </div>
+            )}
             <h3 className="text-center font-semibold py-4 text-4xl">
               {fetchedSeller?.shopname}
             </h3>
-            <p className=" text-sm text-[#000000a6] p-2.5 flex text-center items-center">
-              {fetchedSeller?.description}
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-              quae cumque delectus, ipsam accusantium recusandae distinctio a
-              ullam eum mollitia harum quis eligendi et placeat atque. Error
-              mollitia facere maiores.
+            <p className="text-sm text-[#000000a6] p-2.5 flex text-center items-center">
+              {fetchedSeller?.description
+                ? fetchedSeller?.description
+                : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt quae cumque delectus, ipsam accusantium recusandae distinctio a ullam eum mollitia harum quis eligendi et placeat atque. Error mollitia facere maiores."}
             </p>
             {isOwner ? (
               <div className="py-3 px-4 ">
@@ -198,7 +199,21 @@ const ShopInfo = ({ isOwner }) => {
                 </div>
                 <div>
                   <h5 className=" font-semibold">Total Products</h5>
-                  <p className="text-[#000000a6]">10</p>
+                  <p className="text-[#000000a6]">
+                    {fetchedSeller?.products?.length}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3 flex items-center gap-3 rounded-2xl cursor-pointer shadow-lg">
+                <div className=" py-3 px-1.5 bg-pink-50 rounded-2xl">
+                  <CubeIcon className=" w-20 h-20 text-indigo-500" />
+                </div>
+                <div>
+                  <h5 className=" font-semibold">Total Events</h5>
+                  <p className="text-[#000000a6]">
+                    {fetchedSeller?.events?.length}
+                  </p>
                 </div>
               </div>
 
@@ -208,7 +223,7 @@ const ShopInfo = ({ isOwner }) => {
                 </div>
                 <div>
                   <h5 className=" font-semibold">Ratings</h5>
-                  <p className="text-[#000000a6]">4/5</p>
+                  <p className="text-[#000000a6]">{fetchedSeller?.ratings}</p>
                 </div>
               </div>
 

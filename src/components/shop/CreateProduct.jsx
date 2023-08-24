@@ -42,10 +42,18 @@ const CreateProduct = () => {
   }, [dispatch, error, success]);
 
   const handleImageChange = (e) => {
-    e.preventDefault();
+    const files = Array.from(e.target.files);
 
-    let files = Array.from(e.target.files);
-    setImages((prevImages) => [...prevImages, ...files]);
+    files.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImages((old) => [...old, reader.result]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleSubmit = (e) => {
@@ -273,7 +281,7 @@ const CreateProduct = () => {
                     {images &&
                       images.map((i, index) => (
                         <img
-                          src={URL.createObjectURL(i)}
+                          src={i}
                           key={index}
                           alt=""
                           className=" w-full h-full object-cover"

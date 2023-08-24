@@ -21,7 +21,6 @@ import { productData } from "../static/data";
 import SearchBar from "./SearchBar";
 import NavLinks from "./NavLinks";
 import { useSelector } from "react-redux";
-import { backend_url } from "../utils/axiosInstance";
 import Accordian from "./accordian/Accordian";
 import NavLinksMobile from "./navlinks/NavLinksMobile";
 import Cart from "./cart/Cart";
@@ -32,6 +31,9 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { sellerIsAuthenticated, seller } = useSelector(
+    (state) => state.seller
+  );
   const { cart } = useSelector((state) => state.cart);
   const { wishList } = useSelector((state) => state.wishList);
   const [visible, setVisible] = useState(false);
@@ -71,7 +73,7 @@ const Navbar = () => {
               {user?.avatar ? (
                 <div className="w-8 h-8 mr-1 rounded-full">
                   <img
-                    src={`${backend_url}${user?.avatar}`}
+                    src={`${user?.avatar?.url}`}
                     className=" h-full w-full rounded-full object-center object-cover "
                     alt=""
                   />
@@ -108,13 +110,23 @@ const Navbar = () => {
                       <p className=" ">Special Offers</p>
                     </span>
                     <hr className=" h-0 my-2" />
-                    <Link
-                      to={`/auth/shop/create-shop`}
-                      className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
-                    >
-                      <BuildingStorefrontIcon className="h-6 w-6 text-black" />
-                      <p className=" ">Create a Shop</p>
-                    </Link>
+                    {sellerIsAuthenticated ? (
+                      <Link
+                        to={`/shop/${seller?._id}`}
+                        className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
+                      >
+                        <BuildingStorefrontIcon className="h-6 w-6 text-black" />
+                        <p className=" ">Go to Shop</p>
+                      </Link>
+                    ) : (
+                      <Link
+                        to={`/auth/shop/create-shop`}
+                        className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
+                      >
+                        <BuildingStorefrontIcon className="h-6 w-6 text-black" />
+                        <p className=" ">Create a Shop</p>
+                      </Link>
+                    )}
                     <span
                       className=" p-3 rounded-2xl hover:bg-[#f6f6f4] items-center space-x-2 flex"
                       onClick={() => logoutHandler()}
@@ -216,12 +228,22 @@ const Navbar = () => {
         )}
         <NavLinks className={`hidden lg:flex space-x-10 pr-4`} />
         <SearchBar className={"lg:hidden ml-8 mb-4"} />
-        <Link
-          to={`/app/create-shop`}
-          className="hidden mb-1 lg:block font-medium whitespace-nowrap py-3 px-8  rounded-xl bg-[#f6f6f4] text-black hover:bg-black hover:text-white transition-all duration-300 ease-linear delay-0"
-        >
-          Create a Shop
-        </Link>
+
+        {sellerIsAuthenticated ? (
+          <Link
+            to={`/shop/${seller?._id}`}
+            className="hidden mb-1 lg:block font-medium whitespace-nowrap py-3 px-8  rounded-xl bg-[#f6f6f4] text-black hover:bg-black hover:text-white transition-all duration-300 ease-linear delay-0"
+          >
+            Go to Shop
+          </Link>
+        ) : (
+          <Link
+            to={`/app/create-shop`}
+            className="hidden mb-1 lg:block font-medium whitespace-nowrap py-3 px-8  rounded-xl bg-[#f6f6f4] text-black hover:bg-black hover:text-white transition-all duration-300 ease-linear delay-0"
+          >
+            Create a Shop
+          </Link>
+        )}
       </div>
       {/* Cart popup */}
       {openCart ? <Cart setOpenCart={setOpenCart} openCart={openCart} /> : null}

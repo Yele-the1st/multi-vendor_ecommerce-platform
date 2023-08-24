@@ -38,7 +38,7 @@ const NavbarShop = () => {
               {seller?.avatar ? (
                 <div className=" w-8 h-8 mr-1 rounded-full">
                   <img
-                    src={`${backend_url}${seller?.avatar}`}
+                    src={`${seller?.avatar?.url}`}
                     className=" h-full w-full rounded-full object-center object-cover  "
                     alt=""
                   />

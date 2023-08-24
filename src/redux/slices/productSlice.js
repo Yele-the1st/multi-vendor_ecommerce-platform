@@ -8,6 +8,7 @@ import {
   loadAllProduct,
   loadLatestProduct,
 } from "../actions/productAction";
+import { toast } from "react-toastify";
 
 const productSlice = createSlice({
   name: "product",

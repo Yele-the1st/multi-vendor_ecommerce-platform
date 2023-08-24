@@ -8,7 +8,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { backend_url } from "../utils/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addToCart } from "../redux/slices/cartSlice";
@@ -80,7 +79,7 @@ const ProductOverview = ({ setOpen, seller, item }) => {
               <div className="  sm:col-span-4 lg:col-span-5">
                 <div className="aspect-h-3 aspect-w-2 overflow-hidden rounded-lg bg-gray-100">
                   <img
-                    src={`${backend_url}${item.images && item.images[0]}`}
+                    src={`${item.images && item.images[0]?.url}`}
                     alt=""
                     className="object-cover object-center"
                   />

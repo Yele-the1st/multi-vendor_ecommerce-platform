@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { backend_url } from "../utils/axiosInstance";
 import { useItems } from "../hooks/useItems";
 import { debounce } from "lodash";
 import { useRef } from "react";
@@ -106,9 +105,7 @@ const SearchBar = ({ className }) => {
                     >
                       <div className="w-full flex items-center justify-start py-3 ">
                         <img
-                          src={`${backend_url}${
-                            result?.images && result.images[0]
-                          }`}
+                          src={`${result?.images && result.images[0]?.url}`}
                           alt=""
                           className="w-10 h-10 mr-[10px]"
                         />

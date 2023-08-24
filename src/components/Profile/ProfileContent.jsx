@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  axiosInstanceJsonDataWithCredentials,
-  backend_url,
-} from "../../utils/axiosInstance";
+import { axiosInstanceJsonDataWithCredentials } from "../../utils/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BookmarkIcon,
@@ -52,24 +49,30 @@ const ProfileContent = ({ active, setActive }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const newForm = new FormData();
-    newForm.append("file", avatar);
-    newForm.append("fullname", fullname);
-    newForm.append("about", about);
-    newForm.append("phoneNumber", phoneNumber);
-    newForm.append("id", user._id);
-
-    for (const entry of newForm.entries()) {
-      console.log(entry);
-    }
+    const newForm = {
+      avatar,
+      fullname,
+      about,
+      phoneNumber: phoneNumber,
+      id: user._id,
+    };
 
     dispatch(updateUserInfo(newForm));
     toast.success("Successfully updated user info");
   };
 
-  const handleFileInputChange = (event) => {
-    const file = event.target.files[0];
-    setAvatar(file);
+  const handleFileInputChange = (e) => {
+    const reader = new FileReader();
+    console.log("jjjs");
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+        console.log(avatar);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   return (
@@ -183,15 +186,13 @@ const ProfileContent = ({ active, setActive }) => {
                         <div className=" h-12 w-12 rounded-full overflow-hidden">
                           {avatar ? (
                             <img
-                              src={URL.createObjectURL(avatar)}
+                              src={avatar}
                               alt="avatar"
                               className=" h-full w-full object-cover"
                             />
                           ) : (
                             <img
-                              src={`${backend_url}${
-                                user?.avatar && user?.avatar
-                              }`}
+                              src={`${user?.avatar && user?.avatar?.url}`}
                               alt="avatar"
                               className=" h-full w-full object-cover"
                             />
@@ -217,6 +218,7 @@ const ProfileContent = ({ active, setActive }) => {
                         </label>
                       </div>
                     </div>
+
                     <div className="sm:col-span-3 col-span-full ">
                       <div className=" flex items-end pb-2 h-full justify-end gap-x-6">
                         <button

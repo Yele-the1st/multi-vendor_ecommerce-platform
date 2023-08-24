@@ -4,8 +4,7 @@ import { loadSeller, logoutSeller, loginSeller } from "../actions/sellerAction";
 const sellerSlice = createSlice({
   name: "seller",
   initialState: {
-    sellerIsAuthenticated:
-      localStorage.getItem("sellerIsAuthenticated") === "true",
+    sellerIsAuthenticated: localStorage.getItem("sellerIsAuthenticated"),
     loading: true,
     seller: localStorage.getItem("seller")
       ? JSON.parse(localStorage.getItem("seller"))

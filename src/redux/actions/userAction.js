@@ -56,7 +56,7 @@ export const updateUserInfo = createAsyncThunk(
   "user/updateUserInfo",
   async (newForm) => {
     try {
-      const response = await axiosInstanceFormDataWithCredentials.put(
+      const response = await axiosInstanceJsonDataWithCredentials.put(
         "/users/update-user-info",
         newForm
       );

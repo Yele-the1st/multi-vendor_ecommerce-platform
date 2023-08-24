@@ -14,7 +14,10 @@ import {
   passwordValidation,
   fullnameValidation,
 } from "../validation/validation";
-import { axiosInstanceFormData } from "../utils/axiosInstance";
+import {
+  axiosInstanceFormData,
+  axiosInstanceJsonData,
+} from "../utils/axiosInstance";
 import { toast } from "react-toastify";
 
 const Signup = () => {
@@ -51,9 +54,16 @@ const Signup = () => {
     reset: resetPasswordInput,
   } = useInput(passwordValidation);
 
-  const handleFileInputChange = (event) => {
-    const file = event.target.files[0];
-    setAvatar(file);
+  const handleFileInputChange = (e) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   let formIsValid = false;
@@ -74,26 +84,16 @@ const Signup = () => {
       return; // Prevent form submission if formIsValid is false
     }
 
-    const newForm = new FormData();
-    newForm.append("file", avatar);
-    newForm.append("fullname", fullname);
-    newForm.append("email", email);
-    newForm.append("password", password);
-
-    for (const entry of newForm.entries()) {
-      console.log(entry);
-    }
-
     try {
-      const response = await axiosInstanceFormData.post(
+      const response = await axiosInstanceJsonData.post(
         "/users/register-user",
-        newForm
+        { fullname, email, password, avatar }
       );
       toast.success(response.data.message);
       resetEmailInput();
       resetPasswordInput();
       resetFullnameInput();
-      setAvatar(null);
+      setAvatar("");
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -224,7 +224,7 @@ const Signup = () => {
                 <div className=" h-12 w-12 rounded-full overflow-hidden">
                   {avatar ? (
                     <img
-                      src={URL.createObjectURL(avatar)}
+                      src={avatar}
                       alt="avatar"
                       className=" h-full w-full object-cover"
                     />

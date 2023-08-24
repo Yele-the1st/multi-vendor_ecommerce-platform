@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeFromWishList } from "../../redux/slices/wishListSlice";
 import { toast } from "react-toastify";
 import { addToCart } from "../../redux/slices/cartSlice";
-import { backend_url } from "../../utils/axiosInstance";
 
 const Wishlist = ({ setOpenWishlist, openWishlist }) => {
   const { wishList } = useSelector((state) => state.wishList);
@@ -122,7 +121,7 @@ const WishlistSingle = ({
     <div className=" font-Ubuntu flex py-6">
       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
         <img
-          src={`${backend_url}${data.images && data.images[0]}`}
+          src={`${data.images && data.images[0]?.url}`}
           className="h-full w-full object-cover object-center"
         />
       </div>

@@ -9,7 +9,7 @@ import {
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Accordian from "./accordian/Accordian";
-import { backend_url } from "../utils/axiosInstance";
+
 import { addToCart } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,9 +91,7 @@ const EventDetails = ({ data }) => {
                       <div className="pt-[80%] h-0 relative">
                         <div className=" duration-700 ease-in absolute left-0 overflow-hidden top-0 h-full w-full">
                           <img
-                            src={`${backend_url}${
-                              data.images && data.images[select]
-                            }`}
+                            src={`${data.images && data.images[select]?.url}`}
                             alt=""
                             className=" overflow-clip max-h-full relative -translate-y-[50%] top-[50%] block mx-auto max-w-full  rounded-[6px]"
                           />
@@ -111,7 +109,7 @@ const EventDetails = ({ data }) => {
                             onClick={() => setSelect(index)}
                           >
                             <img
-                              src={`${backend_url}${image}`}
+                              src={`${image?.url}`}
                               alt=""
                               className="max-w-full w-full overflow-clip"
                             />
@@ -230,8 +228,8 @@ const EventDetails = ({ data }) => {
                         <div className="flex font-Ubuntu mb-2 font-semibold items-center gap-2.5 ">
                           <img
                             className="w-[46px] h-[46px]  object-cover rounded-full "
-                            src={`${backend_url}${
-                              data?.shopId?.avatar && data?.shopId?.avatar
+                            src={`${
+                              data?.shopId?.avatar && data?.shopId?.avatar?.url
                             }`}
                             alt=""
                           />
@@ -344,9 +342,7 @@ const ProductDetailsInfo = ({ data }) => {
             <div className="flex font-Ubuntu mb-2 font-semibold items-center gap-2.5 ">
               <img
                 className="w-[46px] h-[46px]  object-cover rounded-full "
-                src={`${backend_url}${
-                  data?.shopId?.avatar && data?.shopId?.avatar
-                }`}
+                src={`${data?.shopId?.avatar && data?.shopId?.avatar?.url}`}
                 alt=""
               />
               <div className="flex flex-col">

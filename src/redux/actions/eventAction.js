@@ -3,6 +3,7 @@ import {
   axiosInstanceGet,
   axiosInstanceFormData,
   axiosInstanceJsonDataWithCredentials,
+  axiosInstanceJsonData,
 } from "../../utils/axiosInstance";
 
 export const loadShopEvents = createAsyncThunk(
@@ -35,7 +36,7 @@ export const createEvent = createAsyncThunk(
   "events/createEvent",
   async (newForm) => {
     try {
-      const response = await axiosInstanceFormData.post(
+      const response = await axiosInstanceJsonData.post(
         "/events/create-event",
         newForm // Shorthand object notation
       );

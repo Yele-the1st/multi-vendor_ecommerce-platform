@@ -59,11 +59,11 @@ const App = () => {
   async function getStripeApikey() {
     try {
       const { data } = await axiosInstanceGet.get(`/payments/stripeapikey`);
-      setStripeApiKey(data.stripeApiKey);
+      setStripeApiKey(data?.stripeApiKey);
     } catch (error) {
       // Handle the error when retrieving the Stripe API key
       console.error("Error retrieving Stripe API key:", error.message);
-      toast.error(error.message);
+      toast.error(`${error.message}`);
       // Display an error message to the user or handle the error as needed
       // Example:
       // displayErrorMessage('An error occurred while retrieving the Stripe API key.');

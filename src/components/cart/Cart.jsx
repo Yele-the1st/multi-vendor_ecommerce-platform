@@ -4,7 +4,6 @@ import styles from "../../styles/styles";
 import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { backend_url } from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import { addToCart, removeFromCart } from "../../redux/slices/cartSlice";
 
@@ -162,7 +161,7 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
     <div className=" font-Ubuntu flex py-6">
       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
         <img
-          src={`${backend_url}${data.images && data.images[0]}`}
+          src={`${data.images && data.images[0]?.url}`}
           className="h-full w-full object-cover object-center"
         />
       </div>

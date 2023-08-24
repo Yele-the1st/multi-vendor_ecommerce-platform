@@ -17,7 +17,10 @@ import {
   shopNameValidation,
   zipcodeValidation,
 } from "../../validation/validation";
-import { axiosInstanceFormData } from "../../utils/axiosInstance";
+import {
+  axiosInstanceFormData,
+  axiosInstanceJsonData,
+} from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 
 const CreateShop = () => {
@@ -84,9 +87,16 @@ const CreateShop = () => {
     reset: resetPasswordInput,
   } = useInput(passwordValidation);
 
-  const handleFileInputChange = (event) => {
-    const file = event.target.files[0];
-    setAvatar(file);
+  const handleFileInputChange = (e) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   let formIsValid = false;
@@ -107,20 +117,16 @@ const CreateShop = () => {
       return; // Prevent form submission if formIsValid is false
     }
 
-    const newForm = new FormData();
-    newForm.append("file", avatar);
-    newForm.append("shopname", shopname);
-    newForm.append("phoneNumber", phonenumber);
-    newForm.append("email", email);
-    newForm.append("password", password);
-    newForm.append("address", address);
-    newForm.append("zipcode", zipcode);
-
     try {
-      const response = await axiosInstanceFormData.post(
-        "/shops/create-shop",
-        newForm
-      );
+      const response = await axiosInstanceJsonData.post("/shops/create-shop", {
+        avatar,
+        shopname,
+        phoneNumber: phonenumber,
+        email,
+        password,
+        address,
+        zipcode,
+      });
       toast.success(response.data.message);
       resetEmailInput();
       resetPasswordInput();
@@ -368,7 +374,7 @@ const CreateShop = () => {
                   <div className=" h-12 w-12 rounded-full overflow-hidden">
                     {avatar ? (
                       <img
-                        src={URL.createObjectURL(avatar)}
+                        src={avatar}
                         alt="avatar"
                         className=" h-full w-full object-cover"
                       />

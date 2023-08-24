@@ -47,8 +47,20 @@ const CreateEvent = () => {
   const handleImageChange = (e) => {
     e.preventDefault();
 
-    let files = Array.from(e.target.files);
-    setImages((prevImages) => [...prevImages, ...files]);
+    const files = Array.from(e.target.files);
+
+    // setImages([]);
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImages((old) => [...old, reader.result]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleStartDateChange = (e) => {
@@ -57,7 +69,7 @@ const CreateEvent = () => {
       // Handle invalid date value
       setStartDate(null);
       return;
-    }
+    } 
     const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000); // Add three days in milliseconds
     setStartDate(startDate);
     setEndDate(null);
@@ -88,6 +100,7 @@ const CreateEvent = () => {
     images.forEach((image) => {
       newForm.append("images", image);
     });
+
     newForm.append("name", name);
     newForm.append("description", description);
     newForm.append("category", category);
@@ -360,7 +373,7 @@ const CreateEvent = () => {
                     {images &&
                       images.map((i, index) => (
                         <img
-                          src={URL.createObjectURL(i)}
+                          src={i}
                           key={index}
                           alt=""
                           className=" w-full h-full object-cover"

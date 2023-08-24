@@ -13,8 +13,8 @@ const ShopCard = ({ shop }) => {
     <div className=" group w-full max-w-sm bg-white rounded-2xl font-Ubuntu shadow-lg">
       <div className=" relative flex flex-col items-center pb-1">
         <img
-          className=" z-10 absolute top-10 inset-y-0 w-24 h-24 rounded-full shadow-lg"
-          src={`${backend_url}${shop?.avatar && shop.avatar}`}
+          className=" z-10 absolute top-10 inset-y-0 w-24 h-24 object-cover rounded-full shadow-lg"
+          src={`${shop?.avatar && shop.avatar?.url}`}
           alt="Bonnie image"
         />
         <div className=" w-full mb-8 h-28 rounded-t-2xl overflow-hidden">
@@ -28,7 +28,7 @@ const ShopCard = ({ shop }) => {
           </div>
           <img
             className="  w-full h-full object-cover "
-            src={`${backend_url}${shop?.avatar && shop.avatar}`}
+            src={`${shop?.avatar && shop.avatar?.url}`}
             alt="Bonnie image"
           />
         </div>
