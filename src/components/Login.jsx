@@ -55,6 +55,12 @@ const Login = () => {
     dispatch(loginUser({ email: email, password: password }));
   };
 
+  const [agreed, setAgreed] = useState(false);
+
+  const handleSwitchChange = () => {
+    setAgreed(!agreed);
+  };
+
   return (
     <div className=" relative min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 sm:px-6 lg:px-8 z-10">
       <Link to={`/`} className="flex items-center mb-6">
@@ -148,7 +154,7 @@ const Login = () => {
             )}
             {email && !emialInputHasError && (
               <div className="flex mt-4 text-sm justify-between">
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <input
                     id="remember-me"
                     name="remember-me"
@@ -156,6 +162,33 @@ const Login = () => {
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <p className=" font-Ubuntu tracking-wide">Remember me</p>
+                </div> */}
+                <div className="flex gap-x-4 items-center sm:col-span-2">
+                  <div className="flex h-6 items-center">
+                    <label
+                      className={`flex w-8 flex-none items-end cursor-pointer rounded-full p-px ring-1 ring-inset ${
+                        agreed
+                          ? " bg-[#FF6113] ring-[#FF6113]"
+                          : "bg-gray-200 ring-gray-900/5"
+                      } transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tramangoOrange`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={agreed}
+                        onChange={handleSwitchChange}
+                        className="sr-only"
+                      />
+                      <span
+                        aria-hidden="true"
+                        className={`h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out ${
+                          agreed ? "translate-x-3.5 " : "translate-x-0 "
+                        }`}
+                      />
+                    </label>
+                  </div>
+                  <div className="text-sm mb-1 leading-6 text-gray-600">
+                    Remember me
+                  </div>
                 </div>
                 <Link
                   to="/"
